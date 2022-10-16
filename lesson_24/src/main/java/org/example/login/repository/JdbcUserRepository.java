@@ -17,19 +17,21 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findUsers() {
-        String GET_ALL_USERS = "SELECT * FROM users";
+        String GET_ALL_USERS = "SELECT name,password FROM users";
+        final List<User> users = new ArrayList<>();
+
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(GET_ALL_USERS);
-            final List<User> users = new ArrayList<>();
             while (rs.next()) {
                 final User user = new User(rs.getString("name"), rs.getString("password"));
                 users.add(user);
             }
-            return users;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class JdbcUserRepository implements UserRepository {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -85,13 +87,13 @@ public class JdbcUserRepository implements UserRepository {
             if (query_result.next()){
                 existedUserData.put(query_result.getString("name"),
                         query_result.getString("password"));
-            }
 
-            Map<String,String> actualUserData = new HashMap<>();
-            actualUserData.put(user.getName(),user.getPassword());
+                Map<String,String> actualUserData = new HashMap<>();
+                actualUserData.put(user.getName(),user.getPassword());
 
-            if(existedUserData.equals(actualUserData)){
-                return true;
+                if(existedUserData.equals(actualUserData)){
+                    return true;
+                }
             }
         }
         catch (SQLException e) {

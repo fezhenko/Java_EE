@@ -37,7 +37,8 @@ public class DependencyInitializationContextListener implements ServletContextLi
         try {
             final Connection connection = (Connection) sce.getServletContext().getAttribute("connection");
             connection.close();
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }

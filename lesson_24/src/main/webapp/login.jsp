@@ -9,13 +9,13 @@
 
 <h2>Login Form</h2>
 
-  <form action="<%= request.getContextPath()%>/login" method="post">
+  <form action="login" method="post">
     <div class="container">
-      <label for="uname"><b>Username</b></label>
-      Name: <input type="text" placeholder="Enter Username" name="username" required>
+      <label><b>Username</b></label>
+      username: <input type="text" placeholder="Enter Username" name="username" required>
 
-      <label for="psw"><b>Password</b></label>
-      Password: <input type="password" placeholder="Enter Password" name="password" required>
+      <label><b>Password</b></label>
+      password: <input type="password" placeholder="Enter Password" name="password" required>
 
       <button type="submit">Login</button>
     </div>
