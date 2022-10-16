@@ -3,7 +3,6 @@ package org.example.login.servlet;
 import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet{
@@ -31,28 +29,22 @@ public class LoginServlet extends HttpServlet{
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String name = req.getParameter("name");
     String password = req.getParameter("password");
     User user = new User(name, password);
 
         if(loginService.validateUser(user)){
-            try(PrintWriter printWriter = resp.getWriter()){
-                printWriter.write("user exist in DB, redirected...");
+            try{
                 getServletContext().getRequestDispatcher("/postLogin.jsp").forward(req,resp);
             }
             catch (IOException | ServletException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
         else{
             loginService.saveUsers(user);
-            try(PrintWriter printWriter = resp.getWriter()){
-                printWriter.write("user is saved to DB...");
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            getServletContext().getRequestDispatcher("/postLogin.jsp").forward(req,resp);
         }
     }
 }

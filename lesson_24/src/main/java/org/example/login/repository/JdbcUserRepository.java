@@ -66,11 +66,11 @@ public class JdbcUserRepository implements UserRepository {
             else{
                 throw new SQLException("User does not exist");
             }
-            return userFromDatabase;
         } 
         catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        return userFromDatabase;
     }
 
     @Override
