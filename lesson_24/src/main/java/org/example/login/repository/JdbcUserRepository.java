@@ -17,21 +17,19 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findUsers() {
-        String GET_ALL_USERS = "SELECT name,password FROM users";
-        final List<User> users = new ArrayList<>();
-
+        String GET_ALL_USERS = "select * from users";
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(GET_ALL_USERS);
+            final List<User> users = new ArrayList<>();
             while (rs.next()) {
-                final User user = new User(rs.getString("name"), rs.getString("password"));
+                final User user = new User(rs.getString("name"),rs.getString("password"));
                 users.add(user);
             }
+            return users;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return users;
     }
 
     @Override
@@ -80,7 +78,8 @@ public class JdbcUserRepository implements UserRepository {
 
         String GET_NAME_PASSWORD_FROM_USERS_QUERY = "SELECT name,password FROM users WHERE name = ?";
         try{
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY);
+            statement.setString(1, user.getName());
             ResultSet query_result = statement.executeQuery(GET_NAME_PASSWORD_FROM_USERS_QUERY);
 
             Map<String,String> existedUserData = new HashMap<>();

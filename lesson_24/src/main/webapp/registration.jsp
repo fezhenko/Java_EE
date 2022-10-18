@@ -1,23 +1,25 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel='stylesheet' type='text/css' href='style.css'>
-    </head>
-    <body>
-        <h2>Registration</h2>
-        <form action="registration" method="post">
-            <div class="container">
-                <label><b>Username</b></label>
-                username: <input type="text" placeholder="Enter Username" name="username" required>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' type='text/css' href='style.css'>
+</head>
+<body>
 
-                <label><b>Password</b></label>
-                password: <input type="password" placeholder="Enter Password" name="password" required>
+<h2>Registration Form</h2>
 
-                <button type="submit">Login</button>
-            </div>
-        </form>
-    </body>
+<form action="registration" method="post">
+    <div class="container">
+        <label><b>Username</b></label>
+        username: <input type="text" placeholder="Enter Username" name="username" required>
+
+        <label><b>Password</b></label>
+        password: <input type="password" placeholder="Enter Password" name="password" required>
+
+        <button type="submit">Login</button>
+    </div>
+</form>
+
+</body>
 </html>
-

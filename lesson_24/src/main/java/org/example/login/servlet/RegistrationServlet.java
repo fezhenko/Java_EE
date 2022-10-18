@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/registration")
@@ -24,15 +25,21 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html");
+        req.getParameter("username");
+        req.getParameter("password");
+        getServletContext().getRequestDispatcher("/registration.jsp").forward(req,resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("username");
         String password = req.getParameter("password");
 
         User user = new User(name, password);
         loginService.saveUsers(user);
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/postLogin.jsp");
-        requestDispatcher.forward(req, resp);
-
+        resp.sendRedirect("postLogin");
     }
 }

@@ -4,6 +4,8 @@ import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -30,7 +32,7 @@ public class LoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+            throws IOException {
 
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
@@ -40,19 +42,17 @@ public class LoginFilter implements Filter {
         User user = new User(username, password);
 
         final HttpSession session = req.getSession();
-        if (nonNull(session.getAttribute("login")) && nonNull(session.getAttribute("password"))) {
-
-            req.getRequestDispatcher("/WEB-INF/postLogin.jsp").forward(req, res);
+        if (nonNull(session.getAttribute("username")) && nonNull(session.getAttribute("password"))) {
+            res.sendRedirect("postLogin");
         }
         else if (loginService.validateUser(user)) {
-
             req.getSession().setAttribute("password", password);
             req.getSession().setAttribute("username", username);
-            req.getRequestDispatcher("/WEB-INF/postLogin.jsp").forward(req, res);
+            res.sendRedirect("postLogin");
         }
         else
         {
-            req.getRequestDispatcher("/WEB-INF/login.jsp").forward(req, res);
+            res.sendRedirect("login");
         }
     }
 }

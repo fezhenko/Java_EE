@@ -25,7 +25,7 @@ public class PostLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> users = loginService.findUsers();
+        final List<User> users = loginService.findUsers();
         req.setAttribute("users", users);
         getServletContext().getRequestDispatcher("/postLogin.jsp").forward(req,resp);
     }

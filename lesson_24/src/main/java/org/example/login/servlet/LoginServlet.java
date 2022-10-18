@@ -41,12 +41,28 @@ public class LoginServlet extends HttpServlet{
         String password = req.getParameter("password");
 
         User user = new User(name, password);
-        if(loginService.validateUser(user)){
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/postLogin.jsp");
-            requestDispatcher.forward(req, resp);
-        }
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/registration.jsp");
-        requestDispatcher.forward(req, resp);
+            HttpSession session = req.getSession();
+            String isLoggedIn = (String) session.getAttribute("isLoggedIn");
+            try {
+                if(isLoggedIn != null && loginService.validateUser(user)){
+                    resp.sendRedirect("postLogin");
+                }
+                else if (isLoggedIn == null && loginService.validateUser(user)){
+                    session.setAttribute("isLoggedIn", true);
+                    resp.sendRedirect("postLogin");
+                }
+                else if (isLoggedIn == null && !loginService.validateUser(user)){
+                    session.setAttribute("isLoggedIn", false);
+                    resp.sendRedirect("registration");
+                }
+                else{
+                    session.setAttribute("isLoggedIn", false);
+                    resp.sendRedirect("login");
+                }
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
     }
 }
