@@ -3,15 +3,12 @@ package org.example.login.filter;
 import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 import static java.util.Objects.nonNull;
 
@@ -52,7 +49,7 @@ public class LoginFilter implements Filter {
         }
         else
         {
-            res.sendRedirect("login");
+            res.sendRedirect("registration");
         }
     }
 }

@@ -3,7 +3,6 @@ package org.example.login.servlet;
 import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,33 +35,26 @@ public class LoginServlet extends HttpServlet{
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("username");
         String password = req.getParameter("password");
 
         User user = new User(name, password);
-
-            HttpSession session = req.getSession();
-            String isLoggedIn = (String) session.getAttribute("isLoggedIn");
-            try {
-                if(isLoggedIn != null && loginService.validateUser(user)){
-                    resp.sendRedirect("postLogin");
-                }
-                else if (isLoggedIn == null && loginService.validateUser(user)){
-                    session.setAttribute("isLoggedIn", true);
-                    resp.sendRedirect("postLogin");
-                }
-                else if (isLoggedIn == null && !loginService.validateUser(user)){
-                    session.setAttribute("isLoggedIn", false);
-                    resp.sendRedirect("registration");
-                }
-                else{
-                    session.setAttribute("isLoggedIn", false);
-                    resp.sendRedirect("login");
-                }
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        HttpSession session = req.getSession();
+        if(loginService.validateUser(user)){
+            session.setAttribute("isLoggedIn", true);
+            System.out.println("validate is true");
+            resp.sendRedirect("postLogin");
+        }
+        else if (!loginService.validateUser(user)){
+            session.setAttribute("isLoggedIn", false);
+            System.out.println("validate is false");
+            resp.sendRedirect("registration");
+        }
+        else{
+            session.setAttribute("isLoggedIn", false);
+            System.out.println("random");
+            resp.sendRedirect("login");
+        }
     }
 }

@@ -1,3 +1,5 @@
+<%@ page import="org.example.login.service.LoginService" %>
+<%@ page import="org.example.login.repository.UserRepository" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>

@@ -80,7 +80,7 @@ public class JdbcUserRepository implements UserRepository {
         try{
             PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY);
             statement.setString(1, user.getName());
-            ResultSet query_result = statement.executeQuery(GET_NAME_PASSWORD_FROM_USERS_QUERY);
+            ResultSet query_result = statement.executeQuery();
 
             Map<String,String> existedUserData = new HashMap<>();
             if (query_result.next()){
