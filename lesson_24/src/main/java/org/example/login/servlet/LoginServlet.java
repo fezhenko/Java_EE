@@ -30,7 +30,6 @@ public class LoginServlet extends HttpServlet{
         final HttpSession session = req.getSession();
         session.getAttribute("username");
         session.getAttribute("password");
-
         getServletContext().getRequestDispatcher("/login.jsp").forward(req,resp);
     }
 
@@ -38,22 +37,19 @@ public class LoginServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("username");
         String password = req.getParameter("password");
-
         User user = new User(name, password);
+
         HttpSession session = req.getSession();
         if(loginService.validateUser(user)){
-            session.setAttribute("isLoggedIn", true);
-            System.out.println("validate is true");
+            session.setAttribute("isLoggedIn", "true");
             resp.sendRedirect("postLogin");
         }
         else if (!loginService.validateUser(user)){
-            session.setAttribute("isLoggedIn", false);
-            System.out.println("validate is false");
+            session.setAttribute("isLoggedIn", "false");
             resp.sendRedirect("registration");
         }
         else{
-            session.setAttribute("isLoggedIn", false);
-            System.out.println("random");
+            session.setAttribute("isLoggedIn", "false");
             resp.sendRedirect("login");
         }
     }

@@ -34,22 +34,19 @@ public class LoginFilter implements Filter {
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
 
-        final String username = req.getParameter("username");
-        final String password = req.getParameter("password");
-        User user = new User(username, password);
-
         final HttpSession session = req.getSession();
-        if (nonNull(session.getAttribute("username")) && nonNull(session.getAttribute("password"))) {
-            res.sendRedirect("postLogin");
+        String getIsLoggedInValue = (String)session.getAttribute("isLoggedIn");
+
+        if(session.getAttribute("isLoggedIn") == null){
+            res.sendRedirect("login");
         }
-        else if (loginService.validateUser(user)) {
-            req.getSession().setAttribute("password", password);
-            req.getSession().setAttribute("username", username);
+        else if(session.getAttribute("isLoggedIn") != null && Boolean.parseBoolean(getIsLoggedInValue)){
             res.sendRedirect("postLogin");
         }
         else
         {
             res.sendRedirect("registration");
         }
+
     }
 }
