@@ -58,8 +58,7 @@ public class JdbcUserRepository implements UserRepository {
         try {
             PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_QUERY);
             statement.setString(1, user.getName());
-            ResultSet rs = statement.executeQuery(GET_USER_FROM_USERS_QUERY);
-            
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 userFromDatabase = new User(rs.getString("name"), rs.getString("password"));
             }
