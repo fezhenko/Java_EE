@@ -26,14 +26,8 @@ public class PostLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        if(session.getAttribute("isLoggedIn")==null) {
-            resp.sendRedirect("login");
-        }
-        else {
-            final List<User> users = loginService.findUsers();
-            req.setAttribute("users", users);
-            getServletContext().getRequestDispatcher("/postLogin.jsp").forward(req,resp);
-        }
+        final List<User> users = loginService.findUsers();
+        req.setAttribute("users", users);
+        getServletContext().getRequestDispatcher("/postLogin.jsp").forward(req,resp);
     }
 }

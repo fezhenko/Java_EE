@@ -41,15 +41,15 @@ public class LoginServlet extends HttpServlet{
 
         HttpSession session = req.getSession();
         if(loginService.validateUser(user)){
-            session.setAttribute("isLoggedIn", "true");
+            session.setAttribute("isLoggedIn", true);
             resp.sendRedirect("postLogin");
         }
         else if (!loginService.validateUser(user)){
-            session.setAttribute("isLoggedIn", "false");
+            session.setAttribute("isLoggedIn", false);
             resp.sendRedirect("registration");
         }
         else{
-            session.setAttribute("isLoggedIn", "false");
+            session.setAttribute("isLoggedIn", false);
             resp.sendRedirect("login");
         }
     }

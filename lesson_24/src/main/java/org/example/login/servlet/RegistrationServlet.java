@@ -27,26 +27,7 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        User user = new User(username,password);
-
-        HttpSession session = req.getSession();
-        if(session.getAttribute("isLoggedIn")==null) {
-            getServletContext().getRequestDispatcher("/registration.jsp").forward(req,resp);
-        }
-        else if(session.getAttribute("isLoggedIn")!=null && loginService.validateUser(user)){
-            if((Boolean)session.getAttribute("isLoggedIn")){
-                resp.sendRedirect("postLogin");
-            }
-            else {
-                resp.sendRedirect("login");
-            }
-        }
-        else {
-            getServletContext().getRequestDispatcher("/registration.jsp").forward(req,resp);
-        }
+        getServletContext().getRequestDispatcher("/registration.jsp").forward(req,resp);
     }
 
     @Override
