@@ -78,23 +78,15 @@ public class JdbcUserRepository implements UserRepository {
     public boolean validateUser(String name, String password) {
 
         User user = new User(name,password);
-        String GET_NAME_PASSWORD_FROM_USERS_QUERY = "SELECT name,password FROM users WHERE name = ?";
-        try{
+        String GET_NAME_PASSWORD_FROM_USERS_QUERY = "SELECT name,password FROM users WHERE name = ? and password = ?";
+        try {
             PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY);
             statement.setString(1, user.getName());
+            statement.setString(2, user.getPassword());
+
             ResultSet queryResult = statement.executeQuery();
-
-            Map<String,String> existedUserData = new HashMap<>();
-            if (queryResult.next()){
-                existedUserData.put(queryResult.getString("name"),
-                        queryResult.getString("password"));
-
-                Map<String,String> actualUserData = new HashMap<>();
-                actualUserData.put(user.getName(),user.getPassword());
-
-                if(existedUserData.equals(actualUserData)){
-                    return true;
-                }
+            if (queryResult.next()) {
+                return true;
             }
             statement.close();
         }
