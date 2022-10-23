@@ -26,10 +26,6 @@ public class LoginServlet extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-
-        final HttpSession session = req.getSession();
-        session.getAttribute("username");
-        session.getAttribute("password");
         getServletContext().getRequestDispatcher("/login.jsp").forward(req,resp);
     }
 
@@ -42,7 +38,7 @@ public class LoginServlet extends HttpServlet{
         HttpSession session = req.getSession();
         if(loginService.validateUser(user)){
             session.setAttribute("isLoggedIn", true);
-            resp.sendRedirect("postLogin");
+            resp.sendRedirect("users");
         }
         else if (!loginService.validateUser(user)){
             session.setAttribute("isLoggedIn", false);

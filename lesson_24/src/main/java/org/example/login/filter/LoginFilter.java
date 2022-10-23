@@ -1,6 +1,5 @@
 package org.example.login.filter;
 
-import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
 import javax.servlet.*;
@@ -10,21 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static java.util.Objects.nonNull;
-
-@WebFilter(urlPatterns = "/")
+@WebFilter(urlPatterns = "/users")
 public class LoginFilter implements Filter {
 
-    private LoginService loginService;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
-        loginService = (LoginService) filterConfig.getServletContext().getAttribute("LoginService");
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
     }
 
     @Override
@@ -38,7 +28,7 @@ public class LoginFilter implements Filter {
         if(session.getAttribute("isLoggedIn") != null){
             boolean getIsLoggedInValue = (Boolean) req.getSession().getAttribute("isLoggedIn");
             if(getIsLoggedInValue){
-                res.sendRedirect("postLogin");
+                res.sendRedirect("users");
             }
             else{
                 res.sendRedirect("login");

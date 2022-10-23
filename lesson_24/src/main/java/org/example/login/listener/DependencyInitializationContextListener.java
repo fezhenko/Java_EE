@@ -28,7 +28,7 @@ public class DependencyInitializationContextListener implements ServletContextLi
             LoginService loginService = new LoginService(repository);
             sce.getServletContext().setAttribute("LoginService", loginService);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -39,7 +39,7 @@ public class DependencyInitializationContextListener implements ServletContextLi
             connection.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

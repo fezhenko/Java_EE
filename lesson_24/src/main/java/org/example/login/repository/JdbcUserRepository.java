@@ -53,7 +53,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User getUser(User user) {
 
-        String GET_USER_FROM_USERS_QUERY = "SELECT * FROM users WHERE name = ?";
+        String GET_USER_FROM_USERS_QUERY = "SELECT name,password FROM users WHERE name = ?";
         User userFromDatabase = null;
         
         try {
@@ -64,12 +64,12 @@ public class JdbcUserRepository implements UserRepository {
                 userFromDatabase = new User(rs.getString("name"), rs.getString("password"));
             }
             else {
-                throw new SQLException("User does not exist");
+                throw new IllegalArgumentException();
             }
             statement.close();
         } 
         catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return userFromDatabase;
     }
@@ -98,7 +98,7 @@ public class JdbcUserRepository implements UserRepository {
             statement.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return false;
     }

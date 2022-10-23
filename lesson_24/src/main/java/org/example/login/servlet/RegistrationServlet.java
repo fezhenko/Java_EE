@@ -3,14 +3,12 @@ package org.example.login.servlet;
 import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/registration")
@@ -36,6 +34,6 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password");
         User user = new User(name, password);
         loginService.saveUsers(user);
-        resp.sendRedirect("postLogin");
+        resp.sendRedirect("users");
     }
 }

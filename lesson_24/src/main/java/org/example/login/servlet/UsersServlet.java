@@ -9,15 +9,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/postLogin")
-public class PostLoginServlet extends HttpServlet {
+@WebServlet("/users")
+public class UsersServlet extends HttpServlet {
 
-    LoginService loginService;
-
+    private LoginService loginService;
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -28,6 +26,6 @@ public class PostLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final List<User> users = loginService.findUsers();
         req.setAttribute("users", users);
-        getServletContext().getRequestDispatcher("/postLogin.jsp").forward(req,resp);
+        getServletContext().getRequestDispatcher("/users.jsp").forward(req,resp);
     }
 }
