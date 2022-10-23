@@ -20,9 +20,9 @@ public class LoginService {
         userRepository.saveUser(user);
     }
 
-    public boolean validateUser(User user)
+    public boolean validateUser(String name, String password)
     {
-        return userRepository.validateUser(user);
+        return userRepository.validateUser(name, password);
     }
 
 }

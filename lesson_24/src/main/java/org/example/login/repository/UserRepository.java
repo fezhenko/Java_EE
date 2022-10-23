@@ -11,6 +11,6 @@ public interface UserRepository {
 
     User getUser(User user);
 
-    boolean validateUser(User user);
+    boolean validateUser(String name, String password);
 
 }

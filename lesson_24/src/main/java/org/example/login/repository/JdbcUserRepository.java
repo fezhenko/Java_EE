@@ -75,8 +75,9 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean validateUser(User user) {
+    public boolean validateUser(String name, String password) {
 
+        User user = new User(name,password);
         String GET_NAME_PASSWORD_FROM_USERS_QUERY = "SELECT name,password FROM users WHERE name = ?";
         try{
             PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY);

@@ -33,14 +33,13 @@ public class LoginServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String name = req.getParameter("username");
         String password = req.getParameter("password");
-        User user = new User(name, password);
 
         HttpSession session = req.getSession();
-        if(loginService.validateUser(user)){
+        if(loginService.validateUser(name, password)){
             session.setAttribute("isLoggedIn", true);
             resp.sendRedirect("users");
         }
-        else if (!loginService.validateUser(user)){
+        else if (!loginService.validateUser(name, password)){
             session.setAttribute("isLoggedIn", false);
             resp.sendRedirect("registration");
         }
