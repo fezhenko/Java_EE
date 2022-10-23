@@ -26,6 +26,7 @@ public class JdbcUserRepository implements UserRepository {
                 final User user = new User(rs.getString("name"),rs.getString("password"));
                 users.add(user);
             }
+            statement.close();
             return users;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -43,7 +44,7 @@ public class JdbcUserRepository implements UserRepository {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
             statement.executeUpdate();
-
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,9 +63,10 @@ public class JdbcUserRepository implements UserRepository {
             if (rs.next()) {
                 userFromDatabase = new User(rs.getString("name"), rs.getString("password"));
             }
-            else{
+            else {
                 throw new SQLException("User does not exist");
             }
+            statement.close();
         } 
         catch (SQLException e) {
             e.printStackTrace();
@@ -93,11 +95,11 @@ public class JdbcUserRepository implements UserRepository {
                     return true;
                 }
             }
+            statement.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 }
