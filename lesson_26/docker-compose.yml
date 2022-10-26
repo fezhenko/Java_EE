@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+
+  tomcat:
+    image: "tomcat:9.0.53-jdk17-corretto"
+    container_name: "tomcat"
+    volumes:
+      - "C:/TMS_Java/Java_EE/lesson_26/target/lesson_26-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/servlet.war"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "postgres"
+
+  postgres:
+    image: "postgres:13.4-alpine"
+    container_name: "postgresql"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "15432:5432"
+    volumes:
+      - "C:/TMS_Java/Java_EE/lesson_26/local-env/postgres/init.sql:/docker-entrypoint-initdb.d/1-init.sql"
