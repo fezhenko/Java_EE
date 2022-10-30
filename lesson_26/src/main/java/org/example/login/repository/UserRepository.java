@@ -9,7 +9,7 @@ public interface UserRepository {
 
     void saveUser(User user);
 
-    User getUser(User user);
+    User getUser(String name);
 
     boolean validateUser(String name, String password);
 

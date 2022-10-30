@@ -20,8 +20,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public List<User> findUsers() {
         final String GET_ALL_USERS = "select id,name,role,password,created_at from users";
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(GET_ALL_USERS);
             final List<User> users = new ArrayList<>();
             while (rs.next()) {
@@ -33,7 +32,6 @@ public class JdbcUserRepository implements UserRepository {
                         rs.getDate("created_at"));
                 users.add(user);
             }
-            statement.close();
             return users;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,30 +43,26 @@ public class JdbcUserRepository implements UserRepository {
 
         final String SAVE_USERNAME_AND_PASSWORD = "INSERT INTO users(name,role,password) VALUES(?,?,?);";
 
-        try {
-            PreparedStatement statement = connection.prepareStatement(SAVE_USERNAME_AND_PASSWORD,
-                    Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement statement = connection.prepareStatement(SAVE_USERNAME_AND_PASSWORD,
+                Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getRole());
             statement.setString(3, user.getPassword());
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public User getUser(User user) {
+    public User getUser(String username) {
 
         final String GET_USER_FROM_USERS_QUERY = "SELECT id,name,role,password,created_at FROM users WHERE name = ?";
-        User userFromDatabase;
-        try {
-            PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_QUERY);
-            statement.setString(1, user.getName());
+        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_QUERY)) {
+            statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                userFromDatabase = new User(
+                return new User(
                         rs.getLong("id"),
                         rs.getString("name"),
                         rs.getString("role"),
@@ -77,11 +71,9 @@ public class JdbcUserRepository implements UserRepository {
             } else {
                 throw new IllegalArgumentException();
             }
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return userFromDatabase;
     }
 
     @Override
@@ -90,17 +82,13 @@ public class JdbcUserRepository implements UserRepository {
         User user = new User(name, password);
         final String GET_NAME_PASSWORD_FROM_USERS_QUERY = "SELECT name,password FROM users WHERE name = ?" +
                 " and password = ?";
-        try {
-            PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY);
+        try (PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
-
-            ResultSet queryResult = statement.executeQuery();
-            if (queryResult.next()) {
-                statement.close();
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
                 return true;
             }
-            statement.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

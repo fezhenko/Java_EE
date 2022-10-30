@@ -2,7 +2,6 @@ package org.example.login.filter;
 
 
 import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -15,11 +14,6 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = "/users")
 public class LoginFilter implements Filter {
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
