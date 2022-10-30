@@ -27,7 +27,6 @@ public class LoginFilter implements Filter {
             final Boolean getIsLoggedInValue = (Boolean) req.getSession().getAttribute("isLoggedIn");
             if (getIsLoggedInValue) {
                 chain.doFilter(request, response);
-                request.getServletContext().getRequestDispatcher("/users.jsp").forward(request, response);
             } else {
                 res.sendRedirect("login");
             }
