@@ -14,8 +14,12 @@ public class UserRequestService {
         this.userRequestRepository = userRequestRepository;
     }
 
-    public List<UserRequest> findUserRequests() {
-        return userRequestRepository.findUserRequests();
+    public List<UserRequest> findIncomingUserRequests() {
+        return userRequestRepository.findIncomingUserRequests();
+    }
+
+    public List<UserRequest> findOutcomingUserRequests() {
+        return userRequestRepository.findOutcomingUserRequests();
     }
 
     public void saveUserRequest(User user, String userRequestStatus) throws SQLException {

@@ -1,0 +1,1 @@
+mvn flyway:migrate -pl lesson_28 -Dflyway.configFiles=src/main/resources/flyway.conf

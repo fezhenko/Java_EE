@@ -19,20 +19,42 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
     }
 
     @Override
-    public List<UserRequest> findUserRequests() {
-        final String GET_ALL_USERS_REQUESTS = "select id,user_id,request_status,created_at from requests";
+    public List<UserRequest> findIncomingUserRequests() {
+        final String GET_ALL_INCOMING_REQUESTS = "SELECT id,user_id,request_status,created_at" +
+                " FROM requests WHERE request_status = 'Incoming';";
         try (Statement statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(GET_ALL_USERS_REQUESTS);
-            final List<UserRequest> userRequests = new ArrayList<>();
+            ResultSet rs = statement.executeQuery(GET_ALL_INCOMING_REQUESTS);
+            final List<UserRequest> incomingUserRequests = new ArrayList<>();
             while (rs.next()) {
                 final UserRequest userRequest = new UserRequest(
                         rs.getLong("id"),
                         rs.getLong("user_id"),
                         rs.getString("request_status"),
                         rs.getDate("created_at"));
-                userRequests.add(userRequest);
+                incomingUserRequests.add(userRequest);
             }
-            return userRequests;
+            return incomingUserRequests;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<UserRequest> findOutcomingUserRequests() {
+        final String GET_ALL_OUTCOMING_REQUESTS = "SELECT id,user_id,request_status,created_at" +
+                " FROM requests WHERE request_status = 'Outcoming';";
+        try (Statement statement = connection.createStatement()) {
+            ResultSet rs = statement.executeQuery(GET_ALL_OUTCOMING_REQUESTS);
+            final List<UserRequest> outcomingUserRequests = new ArrayList<>();
+            while (rs.next()) {
+                final UserRequest userRequest = new UserRequest(
+                        rs.getLong("id"),
+                        rs.getLong("user_id"),
+                        rs.getString("request_status"),
+                        rs.getDate("created_at"));
+                outcomingUserRequests.add(userRequest);
+            }
+            return outcomingUserRequests;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
