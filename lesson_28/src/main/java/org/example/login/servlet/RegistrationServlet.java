@@ -40,6 +40,7 @@ public class RegistrationServlet extends HttpServlet {
             User user = new User(name, role, password);
             loginService.saveUsers(user);
             session.setAttribute("isLoggedIn", true);
+            session.setAttribute("username", name);
             resp.sendRedirect("users");
         } else {
             resp.sendRedirect("login");

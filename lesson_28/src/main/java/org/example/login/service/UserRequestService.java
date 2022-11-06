@@ -14,23 +14,27 @@ public class UserRequestService {
         this.userRequestRepository = userRequestRepository;
     }
 
-    public List<UserRequest> findIncomingUserRequests() {
-        return userRequestRepository.findIncomingUserRequests();
+    public void approveRequest(String requestedUsername, String receivedUsername) {
+        userRequestRepository.approveRequest(requestedUsername, receivedUsername);
     }
 
-    public List<UserRequest> findOutcomingUserRequests() {
-        return userRequestRepository.findOutcomingUserRequests();
+    public List<UserRequest> findApprovedUserRequests() {
+        return userRequestRepository.findApprovedUserRequests();
     }
 
-    public void saveUserRequest(User user, String userRequestStatus) throws SQLException {
-        userRequestRepository.saveRequest(user, userRequestStatus);
+    public List<UserRequest> findNotApprovedUserRequests() {
+        return userRequestRepository.findNotApprovedUserRequests();
     }
 
-    public String getUserRequestStatus(String username) {
-        return userRequestRepository.getRequestStatus(username);
+    public List<User> findUsersWithNotApprovedRequest(String username) {
+        return userRequestRepository.findUsersWithNotApprovedRequest(username);
     }
 
-    public boolean isUserRequestSend(String username) {
-        return userRequestRepository.isRequestSend(username);
+    public void saveUserRequest(String requestedUsername, String receivedUsername) throws SQLException {
+        userRequestRepository.saveRequest(requestedUsername, receivedUsername);
+    }
+
+    public boolean isRequestSend(String requestedUsername, String receivedUsername) {
+        return userRequestRepository.isRequestApproved(requestedUsername, receivedUsername);
     }
 }

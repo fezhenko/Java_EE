@@ -1,35 +1,15 @@
 package org.example.login.model;
 
 
+import lombok.AllArgsConstructor;
 import java.util.Date;
 
+@AllArgsConstructor
 public class UserRequest {
-    private Long id;
-    private Long userId;
-    private String requestStatus;
+    private Long requestId;
+    private Long requestUserId;
+    private Long receivedUserId;
+    private Boolean isApproved;
     private Date createdAt;
-
-    public UserRequest(Long id, Long userId, String requestStatus, Date createdAt) {
-        this.id = id;
-        this.userId = userId;
-        this.requestStatus = requestStatus;
-        this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public String getRequestStatus() {
-        return requestStatus;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
 }
+

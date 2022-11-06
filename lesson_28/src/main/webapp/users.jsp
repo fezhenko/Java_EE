@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Users</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
 </head>
 <body>
@@ -19,17 +19,17 @@
                 <div class="card-text">
                     <table class="table">
                         <tr>
-                            <th>Id</th>
+                            <th>User ID</th>
                             <th>Name</th>
                             <th>Role</th>
                             <th>Password</th>
-                            <th>Created At</th>
+                            <th>Created at</th>
                         </tr>
                         <tbody>
                         <c:forEach items="${users}" var="user">
                             <tr>
                                 <td>
-                                    <span class="text-primary"><c:out value="${user.id}" /></span>
+                                    <span class="text-primary"><c:out value="${user.userId}" /></span>
                                 </td>
                                 <td>
                                     <c:out value="${user.name}" />
@@ -59,25 +59,5 @@
         </div>
     </c:if>
 </div>
-
-<%--<table>--%>
-<%--    <tr>--%>
-<%--        <th>Name</th>--%>
-<%--    </tr>--%>
-<%--    <tbody>--%>
-<%--    <%--%>
-<%--        PrintWriter writer = response.getWriter();--%>
-<%--        ((List<User>) userRequest.getAttribute("users"))--%>
-<%--                .forEach(user -> writer.println("<tr><td>" + user.getName() + "</td></tr>"));--%>
-<%--    %>--%>
-<%--    <% for (User user : (List<User>) userRequest.getAttribute("users")) {%>--%>
-<%--    <tr>--%>
-<%--        <td>--%>
-<%--            <%=user.getName()%>--%>
-<%--        </td>--%>
-<%--    </tr>--%>
-<%--    <%} %>--%>
-<%--    </tbody>--%>
-<%--</table>--%>
 </body>
 </html>

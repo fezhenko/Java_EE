@@ -1,11 +1,11 @@
 CREATE TABLE IF NOT EXISTS users
 (
-    id         BIGSERIAL NOT NULL UNIQUE,
-    name       VARCHAR   NOT NULL UNIQUE,
-    role       VARCHAR   NOT NULL,
-    password   VARCHAR   NOT NULL,
+    user_id BIGSERIAL NOT NULL UNIQUE,
+    name VARCHAR NOT NULL,
+    role VARCHAR NOT NULL CHECK (role in ('ADMIN', 'MANAGER', 'EMPLOYEE')),
+    password VARCHAR NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
-    PRIMARY KEY (id)
+    PRIMARY KEY (user_id)
 );
 
 INSERT INTO users (name, role, password)

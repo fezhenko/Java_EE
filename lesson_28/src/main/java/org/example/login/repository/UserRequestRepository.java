@@ -7,13 +7,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserRequestRepository {
-    List<UserRequest> findIncomingUserRequests();
-    List<UserRequest> findOutcomingUserRequests();
+    List<UserRequest> findApprovedUserRequests();
+    List<UserRequest> findNotApprovedUserRequests();
 
-    void saveRequest(User user, String userRequestStatus) throws SQLException;
+    List<User> findUsersWithNotApprovedRequest(String username);
 
-    boolean isRequestSend(String username);
+    void saveRequest(String requestedUsername, String receivedUsername) throws SQLException;
 
-    String getRequestStatus(String username);
+    boolean isRequestApproved(String requestedUsername, String receivedUsername);
 
+    void approveRequest(String requestedUsername, String receivedUsername);
+
+    void deleteRequest(Long requestId);
 }

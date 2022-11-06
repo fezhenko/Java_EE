@@ -4,11 +4,18 @@ import java.util.Date;
 
 public class User {
 
-    private Long id;
+    private Long userId;
     private String name;
     private String role;
     private String password;
     private Date createdAt;
+
+    public User(Long userId, String name, String role, Date createdAt) {
+        this.userId = userId;
+        this.name = name;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
 
     public User(String name, String password) {
         this.name = name;
@@ -21,8 +28,8 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String name, String role, String password, Date createdAt) {
-        this.id = id;
+    public User(Long userId, String name, String role, String password, Date createdAt) {
+        this.userId = userId;
         this.name = name;
         this.role = role;
         this.password = password;
@@ -41,8 +48,8 @@ public class User {
         return role;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
     public Date getCreatedAt() {
