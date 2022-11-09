@@ -26,8 +26,6 @@ public class IncomingRequestsFilter implements Filter {
             final Boolean getIsLoggedInValue = (Boolean) req.getSession().getAttribute("isLoggedIn");
             if (getIsLoggedInValue) {
                 filterChain.doFilter(servletRequest, servletResponse);
-                servletRequest.getServletContext().getRequestDispatcher("/incoming-requests.jsp")
-                        .forward(servletRequest, servletResponse);
             } else {
                 res.sendRedirect("login");
             }

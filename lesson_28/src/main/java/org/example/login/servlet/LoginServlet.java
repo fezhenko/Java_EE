@@ -1,5 +1,6 @@
 package org.example.login.servlet;
 
+import org.example.login.model.User;
 import org.example.login.service.LoginService;
 
 import javax.servlet.ServletConfig;
@@ -35,8 +36,9 @@ public class LoginServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
         if (loginService.validateUser(name, password)) {
+            final User getUser = loginService.getUser(name, password);
+            session.setAttribute("userId", getUser.getUserId());
             session.setAttribute("isLoggedIn", true);
-            session.setAttribute("username", name);
             resp.sendRedirect("users");
         } else {
             session.setAttribute("isLoggedIn", false);

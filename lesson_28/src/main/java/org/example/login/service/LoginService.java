@@ -24,4 +24,7 @@ public class LoginService {
         return userRepository.validateUser(name, password);
     }
 
+    public User getUser(String name, String password) {
+        return userRepository.getUser(name, password);
+    }
 }

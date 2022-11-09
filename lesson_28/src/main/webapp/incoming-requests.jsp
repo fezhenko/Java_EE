@@ -17,27 +17,37 @@
                     </div>
                     <div class="card-text">
                         <form action="incoming-requests" method="post">
-                        <table class="table">
-                            <tr>
-                                <th>User</th>
-                                <th>Action</th>
-                            </tr>
-                            <tbody>
-                            <c:forEach items="${requestedUsers}" var="requestedUser">
+                            <table class="table">
                                 <tr>
-                                    <td>
-                                        <c:out value="${requestedUser.name}" />
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <button type="approve" class="btn btn-secondary">Approve</button>
-                                            <button type="decline" class="btn btn-secondary">Decline</button>
-                                        </div>
-                                    </td>
+                                    <th>User ID</th>
+                                    <th>User</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                                <tbody>
+                                <c:forEach items="${requestedUsers}" var="requestedUser">
+                                    <input type="hidden" id="requestedUserId" name="requestedUserId" value="${requestedUser.userId}">
+                                    <tr>
+                                        <td>
+                                            <c:out value="${requestedUser.userId}"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${requestedUser.name}"/>
+                                        </td>
+                                        <td>
+                                            <div class="form-group row">
+                                                    <button type="submit" class="btn btn-success">Approve</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="form-group row">
+                                                <button type="submit" class="btn btn-secondary">Decline</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </form>
                     </div>
                 </div>

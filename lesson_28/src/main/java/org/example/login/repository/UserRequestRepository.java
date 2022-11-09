@@ -1,22 +1,21 @@
 package org.example.login.repository;
 
 import org.example.login.model.User;
-import org.example.login.model.UserRequest;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface UserRequestRepository {
-    List<UserRequest> findApprovedUserRequests();
-    List<UserRequest> findNotApprovedUserRequests();
+    List<User> findUsersApprovedRequest(Long userId);
+    List<User> findNotApprovedRequestsByUser(Long userId);
 
-    List<User> findUsersWithNotApprovedRequest(String username);
+    List<User> findUsersWithNotApprovedRequest(Long userId);
 
-    void saveRequest(String requestedUsername, String receivedUsername) throws SQLException;
+    void createRequest(Long requestedUserId, Long receivedUserId) throws SQLException;
 
-    boolean isRequestApproved(String requestedUsername, String receivedUsername);
+    boolean isRequestApproved(Long requestedUserId, Long receivedUserId);
 
-    void approveRequest(String requestedUsername, String receivedUsername);
+    void approveRequest(Long requestedUserId, Long receivedUserId);
 
     void deleteRequest(Long requestId);
 }

@@ -1,7 +1,6 @@
 package org.example.login.service;
 
 import org.example.login.model.User;
-import org.example.login.model.UserRequest;
 import org.example.login.repository.UserRequestRepository;
 
 import java.sql.SQLException;
@@ -14,27 +13,27 @@ public class UserRequestService {
         this.userRequestRepository = userRequestRepository;
     }
 
-    public void approveRequest(String requestedUsername, String receivedUsername) {
-        userRequestRepository.approveRequest(requestedUsername, receivedUsername);
+    public void approveRequest(Long requestedUserId, Long receivedUserId) {
+        userRequestRepository.approveRequest(requestedUserId, receivedUserId);
     }
 
-    public List<UserRequest> findApprovedUserRequests() {
-        return userRequestRepository.findApprovedUserRequests();
+    public List<User> findUsersApprovedRequest(Long userId) {
+        return userRequestRepository.findUsersApprovedRequest(userId);
     }
 
-    public List<UserRequest> findNotApprovedUserRequests() {
-        return userRequestRepository.findNotApprovedUserRequests();
+    public List<User> findNotApprovedUserRequests(Long userId) {
+        return userRequestRepository.findNotApprovedRequestsByUser(userId);
     }
 
-    public List<User> findUsersWithNotApprovedRequest(String username) {
-        return userRequestRepository.findUsersWithNotApprovedRequest(username);
+    public List<User> findUsersWithNotApprovedRequest(Long userId) {
+        return userRequestRepository.findUsersWithNotApprovedRequest(userId);
     }
 
-    public void saveUserRequest(String requestedUsername, String receivedUsername) throws SQLException {
-        userRequestRepository.saveRequest(requestedUsername, receivedUsername);
+    public void saveUserRequest(Long requestedUserId, Long receivedUserId) throws SQLException {
+        userRequestRepository.createRequest(requestedUserId, receivedUserId);
     }
 
-    public boolean isRequestSend(String requestedUsername, String receivedUsername) {
-        return userRequestRepository.isRequestApproved(requestedUsername, receivedUsername);
+    public boolean isRequestSend(Long requestedUserId, Long receivedUserId) {
+        return userRequestRepository.isRequestApproved(requestedUserId, receivedUserId);
     }
 }

@@ -1,7 +1,6 @@
 package org.example.login.repository;
 
 import org.example.login.model.User;
-import org.example.login.model.UserRequest;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -19,39 +18,40 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
     }
 
     @Override
-    public List<UserRequest> findApprovedUserRequests() {
-        final String GET_ALL_INCOMING_REQUESTS =
-                "SELECT request_id,request_user_id,received_user_id,isApproved,created_at " +
-                "FROM requests WHERE isApproved = true;";
-        try (Statement statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(GET_ALL_INCOMING_REQUESTS);
-            final List<UserRequest> incomingUserRequests = new ArrayList<>();
-            while (rs.next()) {
-                final UserRequest userRequest = new UserRequest(
-                        rs.getLong("request_id"),
-                        rs.getLong("request_user_id"),
-                        rs.getLong("received_user_id"),
-                        rs.getBoolean("isApproved"),
-                        rs.getDate("created_at"));
-                incomingUserRequests.add(userRequest);
+    public List<User> findUsersApprovedRequest(Long userId) {
+        final String GET_USERS_WHO_APPROVED_REQUESTS =
+                "SELECT DISTINCT u.user_id,u.name,u.role,u.created_at " +
+                        "FROM requests r " +
+                        "JOIN users u ON r.received_user_id=u.user_id " +
+                        "WHERE r.request_user_id = ? AND r.isapproved = true";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS_WHO_APPROVED_REQUESTS)) {
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            final List<User> usersApprovedRequest = new ArrayList<>();
+            while (resultSet.next()) {
+                final User approvedUser = new User(
+                        resultSet.getLong("user_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("role"),
+                        resultSet.getDate("created_at"));
+                usersApprovedRequest.add(approvedUser);
             }
-            return incomingUserRequests;
+            return usersApprovedRequest;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public List<User> findUsersWithNotApprovedRequest(String username) {
-        final String GET_USERS_WITH_INCOMING_REQUESTS =
-                "SELECT DISTINCT requested_user.user_id,requested_user.name,requested_user.role,requested_user.created_at " +
+    public List<User> findUsersWithNotApprovedRequest(Long userId) {
+        final String GET_USERS_WHO_SENT_REQUESTS_TO_USER =
+                "SELECT DISTINCT u.user_id,u.name,u.role,u.created_at " +
                 "FROM requests r " +
-                "JOIN users requested_user ON r.request_user_id=requested_user.user_id " +
-                "JOIN users received_user ON r.received_user_id=received_user.user_id " +
-                "WHERE received_user.name = ? AND r.isapproved = false";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS_WITH_INCOMING_REQUESTS,
+                "JOIN users u ON r.request_user_id=u.user_id " +
+                "WHERE r.received_user_id = ? AND r.isapproved = false";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS_WHO_SENT_REQUESTS_TO_USER,
                 Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, username);
+            preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             final List<User> usersWithIncomingRequests = new ArrayList<>();
             while (resultSet.next()) {
@@ -69,38 +69,39 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
     }
 
     @Override
-    public List<UserRequest> findNotApprovedUserRequests() {
+    public List<User> findNotApprovedRequestsByUser(Long userId) {
         final String GET_ALL_OUTCOMING_REQUESTS =
-                "SELECT request_id,request_user_id,received_user_id,isApproved,created_at " +
-                "FROM requests " +
-                "WHERE isApproved = false";
-        try (Statement statement = connection.createStatement()) {
-            ResultSet rs = statement.executeQuery(GET_ALL_OUTCOMING_REQUESTS);
-            final List<UserRequest> outcomingUserRequests = new ArrayList<>();
-            while (rs.next()) {
-                final UserRequest userRequest = new UserRequest(
-                        rs.getLong("request_id"),
-                        rs.getLong("request_user_id"),
-                        rs.getLong("received_user_id"),
-                        rs.getBoolean("isApproved"),
-                        rs.getDate("created_at"));
-                outcomingUserRequests.add(userRequest);
+                "SELECT u.user_id,u.name,u.role,created_at " +
+                "FROM requests r " +
+                "JOIN users u ON r.request_user_id =u.user_id " +
+                "WHERE r.received_user_id = ? AND isApproved = false";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_OUTCOMING_REQUESTS)) {
+            preparedStatement.setLong(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            final List<User> requestedFriendUsers = new ArrayList<>();
+            while (resultSet.next()) {
+                final User requestedUser = new User(
+                        resultSet.getLong("user_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("role"),
+                        resultSet.getDate("created_at"));
+                requestedFriendUsers.add(requestedUser);
             }
-            return outcomingUserRequests;
+            return requestedFriendUsers;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void saveRequest(String requestedUsername, String receivedUsername) {
-        final String SAVE_USER_REQUEST =
+    public void createRequest(Long requestedUserId, Long receivedUserId) {
+        final String CREATE_REQUEST =
                 "INSERT INTO requests(request_user_id,received_user_id,isApproved)" +
-                "VALUES(?,?,false)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SAVE_USER_REQUEST,
+                "SELECT ?,?,false;";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_REQUEST,
                 Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, requestedUsername);
-            preparedStatement.setString(2, receivedUsername);
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -108,7 +109,7 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
     }
 
     @Override
-    public boolean isRequestApproved(String requestedUsername, String receivedUsername) {
+    public boolean isRequestApproved(Long requestedUserId, Long receivedUserId) {
         final String GET_USER_REQUEST =
                 "SELECT isapproved " +
                 "FROM requests r " +
@@ -117,25 +118,24 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
                 "WHERE requested.name = ? AND received.name=?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_REQUEST,
                 Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, requestedUsername);
-            preparedStatement.setString(2, receivedUsername);
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
             ResultSet rs = preparedStatement.executeQuery();
             return rs.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
+//TODO: изменить аппрув реквест на апдейт вместо инсерт
     @Override
-    public void approveRequest(String requestedUsername, String receivedUsername) {
+    public void approveRequest(Long requestedUserId, Long receivedUserId) {
         final String APPROVE_USER_REQUEST =
                 "INSERT INTO requests(request_user_id,received_user_id,isApproved)" +
-                "VALUES(?,?,?)";
+                "SELECT ?,?,true;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(APPROVE_USER_REQUEST,
                 Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, requestedUsername);
-            preparedStatement.setString(2, receivedUsername);
-            preparedStatement.setBoolean(3, true);
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

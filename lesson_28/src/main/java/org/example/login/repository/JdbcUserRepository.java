@@ -55,17 +55,17 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUser(User user) {
-        final String GET_USER_FROM_USERS_QUERY =
+    public User getUser(String username, String password) {
+        final String GET_USER_FROM_USERS =
                 "SELECT user_id,name,role,password,created_at " +
                 "FROM users " +
-                "WHERE name = ?";
-        User userFromDatabase;
-        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_QUERY)) {
-            statement.setString(1, user.getName());
+                "WHERE name = ? and password = ?";
+        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS)) {
+            statement.setString(1, username);
+            statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                userFromDatabase = new User(
+                return new User(
                         rs.getLong("user_id"),
                         rs.getString("name"),
                         rs.getString("role"),
@@ -77,29 +77,25 @@ public class JdbcUserRepository implements UserRepository {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return userFromDatabase;
     }
 
     @Override
     public boolean validateUser(String name, String password) {
-
-        User user = new User(name, password);
-        final String GET_NAME_PASSWORD_FROM_USERS_QUERY =
+        final String GET_NAME_PASSWORD_FROM_USERS =
                 "SELECT name,password " +
                 "FROM users " +
                 "WHERE name = ? and password = ?";
-        try (PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS_QUERY,
+        try (PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS,
                 Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, user.getName());
-            statement.setString(2, user.getPassword());
+            statement.setString(1, name);
+            statement.setString(2, password);
             ResultSet queryResult = statement.executeQuery();
             if (queryResult.next()) {
-                statement.close();
                 return true;
             }
+            return false;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 }
