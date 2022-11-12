@@ -23,9 +23,9 @@ public class UsersServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         final List<User> users = loginService.findUsers();
         req.setAttribute("users", users);
-        getServletContext().getRequestDispatcher("/users.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/users.jsp").forward(req, res);
     }
 }

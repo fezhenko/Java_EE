@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS requests
     FOREIGN KEY (request_user_id) REFERENCES users (user_id),
     FOREIGN KEY (received_user_id) REFERENCES users (user_id)
 );
--- TODO: изменить проект для использования новых названий колонок для реквестов
 -- (
 --     id BIGSERIAL NOT NULL UNIQUE,
 --     user_id BIGSERIAL NOT NULL,

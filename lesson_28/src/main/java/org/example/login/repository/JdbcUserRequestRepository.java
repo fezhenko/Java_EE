@@ -126,12 +126,12 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
             throw new RuntimeException(e);
         }
     }
-//TODO: изменить аппрув реквест на апдейт вместо инсерт
+
     @Override
     public void approveRequest(Long requestedUserId, Long receivedUserId) {
         final String APPROVE_USER_REQUEST =
-                "INSERT INTO requests(request_user_id,received_user_id,isApproved)" +
-                "SELECT ?,?,true;";
+                "UPDATE requests SET isApproved = true " +
+                "WHERE request_user_id = ? AND received_user_id = ?;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(APPROVE_USER_REQUEST,
                 Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, requestedUserId);

@@ -2,8 +2,11 @@ package org.example.login.model;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 @AllArgsConstructor
 public class UserRequest {
     private Long requestId;

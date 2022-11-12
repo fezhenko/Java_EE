@@ -24,21 +24,21 @@ public class IncomingRequestsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("txt/html");
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("txt/html");
         HttpSession session = req.getSession();
         Long userId = (Long) session.getAttribute("userId");
         final List<User> requestedUsers = userRequestService.findUsersWithNotApprovedRequest(userId);
         req.setAttribute("requestedUsers", requestedUsers);
-        getServletContext().getRequestDispatcher("/incoming-requests.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/incoming-requests.jsp").forward(req, res);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         HttpSession session = req.getSession();
         Long userId = (Long) session.getAttribute("userId");
         Long requestedUserId = Long.valueOf(req.getParameter("requestedUserId"));
         userRequestService.approveRequest(requestedUserId, userId);
-        req.getRequestDispatcher("/incoming-requests.jsp").forward(req, resp);
+        getServletContext().getRequestDispatcher("/incoming-requests.jsp").forward(req, res);
     }
 }
