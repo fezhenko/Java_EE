@@ -17,6 +17,10 @@ public class UserRequestService {
         userRequestRepository.approveRequest(requestedUserId, receivedUserId);
     }
 
+    public void declineRequest(Long requestId) {
+        userRequestRepository.deleteRequest(requestId);
+    }
+
     public List<User> findUsersApprovedRequest(Long userId) {
         return userRequestRepository.findUsersApprovedRequest(userId);
     }
