@@ -40,7 +40,7 @@ public class SocialNetworkFilter implements Filter {
             if (session.getAttribute("isLoggedIn") != null) {
                 final Boolean getIsLoggedInValue = (Boolean) req.getSession().getAttribute("isLoggedIn");
                 if (getIsLoggedInValue) {
-                    request.getServletContext().getRequestDispatcher(servletPath + ".jsp").forward(request, response);
+                    chain.doFilter(request, response);
                 } else {
                     res.sendRedirect("login");
                 }

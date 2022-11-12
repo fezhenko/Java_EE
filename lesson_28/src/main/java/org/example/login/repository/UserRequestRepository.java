@@ -17,5 +17,5 @@ public interface UserRequestRepository {
 
     void approveRequest(Long requestedUserId, Long receivedUserId);
 
-    void deleteRequest(Long requestId);
+    void deleteRequest(Long requestedUserId, Long receivedUserId);
 }

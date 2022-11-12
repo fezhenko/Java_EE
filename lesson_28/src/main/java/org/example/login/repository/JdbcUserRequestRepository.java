@@ -143,11 +143,15 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
     }
 
     @Override
-    public void deleteRequest(Long requestId) {
-        final String DELETE_REQUEST = "DELETE FROM requests WHERE request_id = ?";
+    public void deleteRequest(Long requestedUserId, Long receivedUserId) {
+        final String DELETE_REQUEST =
+                "DELETE FROM requests r " +
+                "USING users u " +
+                "WHERE r.request_user_id = ? and r.received_user_id = ? and isapproved=false;";
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_REQUEST,
                 Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, requestId);
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
             preparedStatement.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);

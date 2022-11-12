@@ -26,7 +26,6 @@
                                 </tr>
                                 <tbody>
                                 <c:forEach items="${requestedUsers}" var="requestedUser">
-                                    <input type="hidden" id="requestId" name="requestId" value="${requestedUser.requestId}">
                                     <input type="hidden" id="requestedUserId" name="requestedUserId" value="${requestedUser.userId}">
                                     <tr>
                                         <td>
