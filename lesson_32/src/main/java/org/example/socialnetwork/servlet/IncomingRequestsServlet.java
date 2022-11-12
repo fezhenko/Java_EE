@@ -1,7 +1,9 @@
-package org.example.login.servlet;
+package org.example.socialnetwork.servlet;
 
-import org.example.login.model.User;
-import org.example.login.service.UserRequestService;
+
+import org.example.socialnetwork.model.User;
+import org.example.socialnetwork.service.UserRequestService;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
