@@ -152,7 +152,7 @@ public class JdbcUserRequestRepository implements UserRequestRepository {
                 Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, requestedUserId);
             preparedStatement.setLong(2, receivedUserId);
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

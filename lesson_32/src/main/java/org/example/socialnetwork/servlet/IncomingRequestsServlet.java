@@ -22,7 +22,7 @@ public class IncomingRequestsServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userRequestService = (UserRequestService) config.getServletContext().getAttribute("UserRequestService");
+        userRequestService = (UserRequestService) config.getServletContext().getAttribute("userRequestService");
     }
 
     @Override

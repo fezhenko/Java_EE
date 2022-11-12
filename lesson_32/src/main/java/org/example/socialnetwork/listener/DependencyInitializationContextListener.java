@@ -15,7 +15,7 @@ public class DependencyInitializationContextListener implements ServletContextLi
 
     @Override
     public void contextInitialized(final ServletContextEvent sce) {
-        final ApplicationContext context = new ClassPathXmlApplicationContext("social-network-config.xml");
+        final ApplicationContext context = new ClassPathXmlApplicationContext("lesson_32.xml");
         final UserService userService = context.getBean(UserService.class);
         sce.getServletContext().setAttribute("userService", userService);
         final UserRequestService userRequestService = context.getBean(UserRequestService.class);
