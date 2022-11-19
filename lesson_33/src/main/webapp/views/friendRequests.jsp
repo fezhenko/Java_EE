@@ -16,7 +16,7 @@
                         <h3>Friend requests</h3>
                     </div>
                     <div class="card-text">
-                        <form action="incoming-requests" method="post">
+                        <form action="friendRequests" method="post">
                             <table class="table">
                                 <tr>
                                     <th>User ID</th>

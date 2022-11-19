@@ -17,7 +17,6 @@ public class JdbcConfig {
             @Value("${username}") final String username,
             @Value("${password}") final String password
     ) throws SQLException {
-        System.out.println(driveClassName);
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(driveClassName);
         dataSource.setUrl(databaseUrl);

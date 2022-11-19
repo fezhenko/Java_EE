@@ -1,7 +1,11 @@
 package org.example.springmvc.model;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.util.Date;
+@Getter
+@AllArgsConstructor
 public class User {
 
     private Long userId;
@@ -27,33 +31,4 @@ public class User {
         this.role = role;
         this.password = password;
     }
-
-    public User(Long userId, String name, String role, String password, Date createdAt) {
-        this.userId = userId;
-        this.name = name;
-        this.role = role;
-        this.password = password;
-        this.createdAt = createdAt;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
 }

@@ -5,11 +5,9 @@ import org.example.springmvc.model.User;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface UserRequestRepository {
+public interface FriendRequest {
     List<User> findUsersApprovedRequest(Long userId);
     List<User> findNotApprovedRequestsByUser(Long userId);
-
-    List<User> findUsersWithNotApprovedRequest(Long userId);
 
     void createRequest(Long requestedUserId, Long receivedUserId) throws SQLException;
 

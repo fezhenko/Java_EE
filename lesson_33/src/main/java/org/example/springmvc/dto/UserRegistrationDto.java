@@ -1,12 +1,10 @@
 package org.example.springmvc.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor
+@Value
 public class UserRegistrationDto {
-    private final String name;
-    private final String password;
-    private final String role;
+    String name;
+    String password;
+    String role;
 }

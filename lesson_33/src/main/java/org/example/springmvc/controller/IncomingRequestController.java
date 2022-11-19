@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/incoming-requests")
+@RequestMapping("/friendRequests")
 @RequiredArgsConstructor
 public class IncomingRequestController {
     final UserRequestService userRequestService;
@@ -22,8 +22,10 @@ public class IncomingRequestController {
     @GetMapping
     protected String getIncomingRequests(Model model) {
     //TODO: добавить инкоминг реквест в интерсептор
-        final List<User> requestedUsers = userRequestService.findUsersWithNotApprovedRequest(authContext.getAuthUserId());
+        final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
         model.addAttribute("requestedUsers", requestedUsers);
-        return "incoming-requests";
+        return "friendRequests";
     }
+
+    //TODO:сделать пост - при аппруе создаю в таблице френдс запись, удаляю запись из реквестс, обновляю страницу
 }

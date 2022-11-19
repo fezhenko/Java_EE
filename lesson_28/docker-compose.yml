@@ -25,5 +25,3 @@ services:
       POSTGRES_DB: "social_network"
     ports:
       - "15432:5432"
-    volumes:
-      - "C:/TMS_Java/Java_EE/lesson_28/local-env/postgres/init.sql:/docker-entrypoint-initdb.d/1-init.sql"

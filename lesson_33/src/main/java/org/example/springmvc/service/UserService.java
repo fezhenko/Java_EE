@@ -27,6 +27,10 @@ public class UserService {
         return userRepository.validateUser(name, password);
     }
 
+    public boolean validateUsername(String username) {
+        return userRepository.validateUsername(username);
+    }
+
     public Long getUserId(String name, String password) {
         return userRepository.getUserId(name, password);
     }

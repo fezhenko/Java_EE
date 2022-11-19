@@ -19,8 +19,12 @@ import java.util.Set;
 @WebFilter("/*")
 public class SocialNetworkFilter implements Filter {
 
+    private Set<String> availableUrls;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        availableUrls = new HashSet<>();
+        availableUrls.add("/login");
+        availableUrls.add("/registration");
         Filter.super.init(filterConfig);
     }
 
@@ -30,23 +34,20 @@ public class SocialNetworkFilter implements Filter {
 
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
-        final Set<String> filteredUrls = new HashSet<>();
-        filteredUrls.add("/users");
-        filteredUrls.add("/incoming-requests");
-        String servletPath = req.getServletPath();
 
-        if (filteredUrls.contains(servletPath)) {
-            final HttpSession session = req.getSession();
-            if (session.getAttribute("isLoggedIn") != null) {
-                final Boolean getIsLoggedInValue = (Boolean) req.getSession().getAttribute("isLoggedIn");
-                if (getIsLoggedInValue) {
-                    chain.doFilter(request, response);
-                } else {
-                    res.sendRedirect("login");
-                }
-            } else {
-                res.sendRedirect("registration");
-            }
+        String servletPath = req.getServletPath();
+        if (availableUrls.contains(servletPath)) {
+            chain.doFilter(request, response);
+            return;
+        }
+        final HttpSession session = req.getSession();
+        if (session.getAttribute("isLoggedIn") == null) {
+            res.sendRedirect("login");
+            return;
+        }
+        Boolean getIsLoggedInValue = (Boolean) req.getSession().getAttribute("isLoggedIn");
+        if (!getIsLoggedInValue) {
+            res.sendRedirect("login");
             return;
         }
         chain.doFilter(request, response);
