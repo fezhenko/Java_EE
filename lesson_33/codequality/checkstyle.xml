@@ -136,7 +136,7 @@
 		</module>
 		<module name="MultipleVariableDeclarations"/>
 		<module name="InnerTypeLast"/>
-		<module name="HideUtilityClassConstructor"/>
+<!--		<module name="HideUtilityClassConstructor"/>-->
 		<module name="MutableException"/>
 		<module name="OneStatementPerLine"/>
 	</module>
