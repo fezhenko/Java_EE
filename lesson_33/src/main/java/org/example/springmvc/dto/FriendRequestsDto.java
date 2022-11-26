@@ -5,9 +5,7 @@ import lombok.Value;
 import javax.validation.constraints.NotEmpty;
 
 @Value
-public class UserLoginDto {
+public class FriendRequestsDto {
     @NotEmpty
-    String name;
-    @NotEmpty
-    String password;
+    Long userId;
 }

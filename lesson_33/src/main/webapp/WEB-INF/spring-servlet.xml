@@ -11,6 +11,7 @@
     <mvc:annotation-driven/>
 
     <mvc:view-controller path="/access-denied" view-name="accessDenied"/>
+    <mvc:view-controller path="/login" view-name="login"/>
 
     <mvc:interceptors>
         <mvc:interceptor>
