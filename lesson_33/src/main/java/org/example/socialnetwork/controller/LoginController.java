@@ -6,10 +6,14 @@ import org.example.socialnetwork.service.UserService;
 import org.example.socialnetwork.session.AuthContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.view.RedirectView;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -20,18 +24,22 @@ public class LoginController {
     final AuthContext authContext;
 
     @GetMapping
-    protected String getLoginForm() {
+    protected String getLoginForm(Model model) {
+        model.addAttribute("userLoginDto", new UserLoginDto());
         return "login";
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    protected RedirectView tryToLogin(UserLoginDto userLoginDto) {
+    protected String tryToLogin(
+            @Valid @ModelAttribute("userLoginDto") final UserLoginDto userLoginDto, final BindingResult result) {
+        if (result.hasErrors()) {
+            return "login";
+        }
         if (userService.validateUser(userLoginDto.getName(), userLoginDto.getPassword())) {
             authContext.setAuthorized(true);
             authContext.setAuthUserId(userService.getUserId(userLoginDto.getName(), userLoginDto.getPassword()));
-            return new RedirectView("users");
+            return "redirect:users";
         }
-        return new RedirectView("registration");
+        return "redirect:registration";
     }
 }
-

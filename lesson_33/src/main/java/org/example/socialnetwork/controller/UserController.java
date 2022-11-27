@@ -1,7 +1,6 @@
 package org.example.socialnetwork.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.socialnetwork.dto.UserRegistrationDto;
 import org.example.socialnetwork.model.User;
 import org.example.socialnetwork.service.UserService;
 import org.example.socialnetwork.session.AuthContext;
@@ -28,18 +27,17 @@ public class UserController {
         return "users";
     }
 
-    protected RedirectView createUserFromRegistrationPage(final UserRegistrationDto userRegistrationDto) {
-        if (userService.validateUsername(userRegistrationDto.getName())) {
-            return new RedirectView("login");
+    protected void createUserFromRegistrationPage(String name, String role, String password) {
+        if (userService.validateUsername(name)) {
+            new RedirectView("login");
+            return;
         }
         try {
-            userService.createUser(userRegistrationDto.getName(), userRegistrationDto.getRole(),
-                    userRegistrationDto.getPassword());
+            userService.createUser(name, role, password);
             authContext.setAuthorized(true);
-            authContext.setAuthUserId(userService.getUserId(userRegistrationDto.getName(), userRegistrationDto.getPassword()));
-            return new RedirectView("users");
+            authContext.setAuthUserId(userService.getUserId(name, password));
         } catch (Exception ex) {
-            return new RedirectView("error");
+            new RedirectView("error");
         }
     }
 }

@@ -21,38 +21,29 @@
                             <th>Created at</th>
                         </tr>
                         <tbody>
-                        <c:forEach items="${users}" var="user">
-                            <tr>
+                            <tr th:each="user: ${users}">
                                 <td>
-                                    <span class="text-primary"><c:out value="${user.userId}" /></span>
+                                    <span th:text="${user.userId}" class="text-primary"></span>
                                 </td>
                                 <td>
-                                    <c:out value="${user.name}" />
+                                    <span th:text="${user.name}" class="text-primary"></span>
                                 </td>
                                 <td>
-                                    <c:out value="${user.role}" />
+                                    <span th:text="${user.role}" class="text-primary"></span>
                                 </td>
                                 <td>
-                                    <c:out value="${user.password}" />
+                                    <span th:text="${user.password}" class="text-primary"></span>
                                 </td>
                                 <td>
-                                    <f:formatDate value="${user.createdAt}" pattern="YYYY-MM-dd HH:mm:ss" />
+                                    <span th:text="${user.createdAt}" class="text-primary"></span>
                                 </td>
                             </tr>
-                        </c:forEach>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-    <c:if test="${param.error != null }">
-        <div class="row" style="margin-top: 25px">
-            <div class="alert alert-danger" role="alert">
-                    ${param.error}
-            </div>
-        </div>
-    </c:if>
 </div>
 </body>
 </html>

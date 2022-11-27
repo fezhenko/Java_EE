@@ -1,10 +1,10 @@
 package org.example.socialnetwork.dto;
 
-import lombok.Value;
+import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
-@Value
+@Data
 public class UserLoginDto {
     @NotEmpty
     String name;

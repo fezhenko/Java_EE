@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.socialnetwork.exceptions.UserNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,4 +47,15 @@ public class GlobalExceptionsHandler {
         modelAndView.setViewName("error");
         return modelAndView;
     }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ModelAndView methodNotSupportedException(
+            final HttpRequestMethodNotSupportedException httpRequestMethodNotSupportedException) {
+        log.error("unexpected exception", httpRequestMethodNotSupportedException);
+        final ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", httpRequestMethodNotSupportedException.getMessage());
+        modelAndView.setViewName("error");
+        return modelAndView;
+    }
+
 }

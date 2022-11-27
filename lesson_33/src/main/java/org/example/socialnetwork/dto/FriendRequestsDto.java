@@ -1,11 +1,11 @@
 package org.example.socialnetwork.dto;
 
-import lombok.Value;
+import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
-@Value
+@Data
 public class FriendRequestsDto {
     @NotEmpty
-    Long userId;
+    String userId;
 }

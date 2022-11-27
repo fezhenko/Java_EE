@@ -12,7 +12,7 @@
                         <h3>Friend requests</h3>
                     </div>
                     <div class="card-text">
-                        <form action="friendRequests" method="post">
+                        <form method="POST" action="#" th:action="@{/friendRequests}" th:object="${friendRequestsDto}">
                             <table class="table">
                                 <tr>
                                     <th>User ID</th>
@@ -21,27 +21,25 @@
                                     <th></th>
                                 </tr>
                                 <tbody>
-                                <c:forEach items="${requestedUsers}" var="requestedUser">
-                                    <input type="hidden" id="requestedUserId" name="requestedUserId" value="${requestedUser.userId}">
-                                    <tr>
+                                    <tr th:each="requestedUser: ${requestedUsers}">
                                         <td>
-                                            <c:out value="${requestedUser.userId}"/>
+                                            <input type="hidden" name="userId" th:field="*{userId}"/>
+                                            <span th:text="${requestedUser.userId}"></span>
                                         </td>
                                         <td>
-                                            <c:out value="${requestedUser.name}"/>
+                                            <span th:text="${requestedUser.name}"></span>
                                         </td>
                                         <td>
                                             <div class="form-group row">
-                                                <button type="submit" class="btn btn-success">Approve</button>
+                                                <button type="submit" name="action" value="accept" class="btn btn-success">Approve</button>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="form-group row">
-                                                <button type="submit" class="btn btn-secondary">Decline</button>
+                                                <button type="submit" name="action" value="decline" class="btn btn-secondary">Decline</button>
                                             </div>
                                         </td>
                                     </tr>
-                                </c:forEach>
                                 </tbody>
                             </table>
                         </form>
@@ -49,13 +47,6 @@
                 </div>
             </div>
         </div>
-        <c:if test="${param.error != null }">
-            <div class="row" style="margin-top: 25px">
-                <div class="alert alert-danger" role="alert">
-                        ${param.error}
-                </div>
-            </div>
-        </c:if>
     </div>
 </body>
 </html>
