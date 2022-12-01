@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,6 +28,11 @@ public class JdbcUserRepository implements UserRepository {
             "SELECT user_id " +
             "FROM users " +
             "WHERE name = ? and password = ?";
+
+    private static final String GET_USER_FROM_USERS_BY_NAME_ROLE =
+            "SELECT user_id,name,role,created_at " +
+                    "FROM users " +
+                    "WHERE name = ? and role = ?";
     private static final String GET_NAME_PASSWORD_FROM_USERS =
             "SELECT name,password " +
             "FROM users " +
@@ -36,19 +42,27 @@ public class JdbcUserRepository implements UserRepository {
             "FROM users " +
             "WHERE name = ?";
 
+    private User createUser(Long userId, String name, String role, String password, Date createdAt) {
+        return new User(userId, name, role, createdAt);
+    }
+
+    private User createUser(Long userId, String name, String role, Date createdAt) {
+        return new User(userId, name, role, createdAt);
+    }
+
     @Override
     public List<User> findUsers() {
         try (Statement statement = connection.createStatement()) {
             ResultSet rs = statement.executeQuery(GET_ALL_USERS);
             final List<User> users = new ArrayList<>();
             while (rs.next()) {
-                final User user = new User(
+                users.add(createUser(
                         rs.getLong("user_id"),
                         rs.getString("name"),
                         rs.getString("role"),
                         rs.getString("password"),
-                        rs.getDate("created_at"));
-                users.add(user);
+                        rs.getDate("created_at"))
+                );
             }
             return users;
         } catch (SQLException e) {
@@ -67,6 +81,28 @@ public class JdbcUserRepository implements UserRepository {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public User getUser(String name, String role) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_BY_NAME_ROLE,
+                Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.setString(2, role);
+            User user = null;
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                user= createUser(
+                        rs.getLong("user_id"),
+                        rs.getString("name"),
+                        rs.getString("role"),
+                        rs.getDate("created_at"));
+            }
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public Long getUserId(String name, String password) {
         try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS)) {
