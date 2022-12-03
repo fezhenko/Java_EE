@@ -9,7 +9,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,15 +40,15 @@ public class FriendRequestsController {
             final BindingResult result) {
         if (!result.hasErrors()) {
             userRequestService.approveRequest(Long.valueOf(friendRequestsDto.getUserId()), authContext.getAuthUserId());
-            //TODO:сделать пост - при аппруе создаю в таблице френдс запись
+        //TODO:сделать пост - при аппруе создаю в таблице френдс запись
             final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
             model.addAttribute("requestedUsers", requestedUsers);
             return "friendRequests";
-            }
+        }
         final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
         model.addAttribute("requestedUsers", requestedUsers);
         return "friendRequests";
-        }
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, params = "action=decline")
     protected String declineFriendRequest(

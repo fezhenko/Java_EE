@@ -21,22 +21,27 @@ public class JdbcUserRepository implements UserRepository {
     private static final String GET_ALL_USERS =
             "SELECT user_id,name,role,password,created_at " +
             "FROM users";
-    private static final String SAVE_USERNAME_AND_PASSWORD =
-            "INSERT INTO users(name,role,password) " +
+    private static final String SAVE_USER =
+            "INSERT INTO users(name,password,role) " +
             "VALUES(?,?,?)";
     private static final String GET_USER_FROM_USERS =
             "SELECT user_id " +
             "FROM users " +
             "WHERE name = ? and password = ?";
 
-    private static final String GET_USER_FROM_USERS_BY_NAME_ROLE =
+    private static final String GET_USER_FROM_USERS_BY_NAME_ROLE_PASSWORD =
             "SELECT user_id,name,role,created_at " +
                     "FROM users " +
-                    "WHERE name = ? and role = ?";
+                    "WHERE name = ? and role = ? and password = ?";
     private static final String GET_NAME_PASSWORD_FROM_USERS =
             "SELECT name,password " +
             "FROM users " +
             "WHERE name = ? and password = ?";
+
+    private static final String GET_USER_BY_ID =
+            "SELECT user_id,name,role,created_at " +
+                    "FROM users " +
+                    "WHERE user_id = ?";
     private static final String GET_USERNAME_FROM_USERS =
             "SELECT name " +
             "FROM users " +
@@ -70,12 +75,12 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
     @Override
-    public void createUser(String name, String role, String password) {
-        try (PreparedStatement statement = connection.prepareStatement(SAVE_USERNAME_AND_PASSWORD,
+    public void createUser(String name, String password, String role) {
+        try (PreparedStatement statement = connection.prepareStatement(SAVE_USER,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
-            statement.setString(2, role);
-            statement.setString(3, password);
+            statement.setString(2, password);
+            statement.setString(3, role);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -83,15 +88,16 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public User getUser(String name, String role) {
-        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_BY_NAME_ROLE,
+    public User getUser(String name, String role, String password) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS_BY_NAME_ROLE_PASSWORD,
                 Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
             statement.setString(2, role);
+            statement.setString(3, password);
             User user = null;
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                user= createUser(
+                user = createUser(
                         rs.getLong("user_id"),
                         rs.getString("name"),
                         rs.getString("role"),
@@ -104,11 +110,31 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public User getUserById(Long userId) {
+        try (PreparedStatement prepareStatement = connection.prepareStatement(GET_USER_BY_ID,
+                Statement.RETURN_GENERATED_KEYS)) {
+            prepareStatement.setLong(1, userId);
+            ResultSet resultSet = prepareStatement.executeQuery();
+            User user = null;
+            if (resultSet.next()) {
+                user = createUser(
+                        resultSet.getLong("user_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("role"),
+                        resultSet.getDate("created_at"));
+            }
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Long getUserId(String name, String password) {
-        try (PreparedStatement statement = connection.prepareStatement(GET_USER_FROM_USERS)) {
-            statement.setString(1, name);
-            statement.setString(2, password);
-            ResultSet rs = statement.executeQuery();
+        try (PreparedStatement prepareStatement = connection.prepareStatement(GET_USER_FROM_USERS)) {
+            prepareStatement.setString(1, name);
+            prepareStatement.setString(2, password);
+            ResultSet rs = prepareStatement.executeQuery();
             if (rs.next()) {
                 return rs.getLong("user_id");
             }

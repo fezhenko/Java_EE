@@ -31,7 +31,6 @@ public class RegistrationController {
         return "registration";
     }
 
-
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     protected String getUserFromRegistrationPage(
             @Valid @ModelAttribute("userRegistrationDto") final UserRegistrationDto userRegistrationDto,
@@ -41,6 +40,6 @@ public class RegistrationController {
         }
         userController.createUserFromRegistrationPage(userRegistrationDto.getName(), userRegistrationDto.getRole(),
                 userRegistrationDto.getPassword());
-        return ("redirect:users");
+        return "redirect:users";
     }
 }

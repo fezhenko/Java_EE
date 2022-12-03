@@ -1,10 +1,12 @@
 package org.example.socialnetwork.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Value;
+import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
-
+@Jacksonized
 @Value
 public class UserDto {
     @NotEmpty

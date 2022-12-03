@@ -23,8 +23,8 @@ public class UserService {
         userRepository.createUser(name, password, role);
     }
 
-    public User getUser(String name, String role) {
-        return userRepository.getUser(name, role);
+    public User getUser(String name, String password, String role) {
+        return userRepository.getUser(name, password, role);
     }
 
     public boolean validateUser(String name, String password) {
@@ -39,4 +39,7 @@ public class UserService {
         return userRepository.getUserId(name, password);
     }
 
+    public User getUserById(Long userId) {
+        return userRepository.getUserById(userId);
+    }
 }
