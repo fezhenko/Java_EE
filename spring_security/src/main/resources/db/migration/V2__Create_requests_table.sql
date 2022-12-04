@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS requests
     is_approved BOOLEAN NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     PRIMARY KEY (request_id),
-    FOREIGN KEY (request_user_id) REFERENCES appUsers (user_id),
-    FOREIGN KEY (received_user_id) REFERENCES appUsers (user_id)
+    FOREIGN KEY (request_user_id) REFERENCES users (user_id),
+    FOREIGN KEY (received_user_id) REFERENCES users (user_id)
 );
 
 INSERT INTO requests (request_user_id, received_user_id, is_approved)
