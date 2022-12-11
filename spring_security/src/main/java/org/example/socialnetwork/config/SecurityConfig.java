@@ -26,13 +26,17 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(requests -> requests
                         .antMatchers("/api/v1/auth").permitAll()
-                        .antMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "MANAGER")
-                        .antMatchers("/api/v1/admins/**").hasAnyRole("ADMIN")
+                        .antMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+                        .antMatchers("/login", "/registration").permitAll()
                         .anyRequest().authenticated()
                 )
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .permitAll()
+                .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(LogoutConfigurer::permitAll);
-
         return http.build();
     }
 }

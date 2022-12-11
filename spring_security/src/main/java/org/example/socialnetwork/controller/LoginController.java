@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 
 import javax.validation.Valid;
 
@@ -35,8 +36,8 @@ public class LoginController {
         if (result.hasErrors()) {
             return "login";
         }
-        if (userService.validateUser(userLoginDto.getName(), userLoginDto.getPassword())) {
-            authContext.setAuthUserId(userService.getUserId(userLoginDto.getName(), userLoginDto.getPassword()));
+        if (userService.validateUser(userLoginDto.getUsername(), userLoginDto.getPassword())) {
+            authContext.setAuthUserId(userService.getUser(userLoginDto.getUsername(), userLoginDto.getPassword()).getUserId());
             return "redirect:users";
         }
         return "redirect:registration";

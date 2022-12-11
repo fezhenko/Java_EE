@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.socialnetwork.dto.UserRegistrationDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class RegistrationController {
     UserController userController;
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     public RegistrationController(UserController userController) {
@@ -38,7 +40,9 @@ public class RegistrationController {
         if (result.hasErrors()) {
             return "registration";
         }
-        userController.createUserFromRegistrationPage(userRegistrationDto.getName(), userRegistrationDto.getRole(),
+        userController.createUserFromRegistrationPage(
+                userRegistrationDto.getUsername(),
+                userRegistrationDto.getRole(),
                 userRegistrationDto.getPassword());
         return "redirect:users";
     }

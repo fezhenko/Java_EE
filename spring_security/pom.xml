@@ -123,7 +123,7 @@
                 <version>9.7.0</version>
                 <configuration>
                     <url>jdbc:postgresql://localhost:15432/social_network</url>
-                    <appUser>postgres</appUser>
+                    <user>postgres</user>
                     <password>postgres</password>
                     <group>true</group>
                     <connectRetries>3</connectRetries>

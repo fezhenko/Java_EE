@@ -12,4 +12,4 @@ management:
         include: '*'
 
 jwt:
-  secret: "SECRET"
+  secret: "qwerty"

@@ -17,7 +17,7 @@ import java.util.List;
 public class JdbcUserRepository implements UserRepository {
     private final Connection connection;
     private final PasswordEncoder passwordEncoder;
-    private final List<AppUser> users;
+    List<AppUser> users;
 
     private static final String GET_ALL_USERS =
             "SELECT user_id,name,role,password,created_at " +
@@ -25,28 +25,7 @@ public class JdbcUserRepository implements UserRepository {
     private static final String SAVE_USER =
             "INSERT INTO users(name,password,role) " +
             "VALUES(?,?,?)";
-    private static final String GET_USER_FROM_USERS =
-            "SELECT user_id " +
-            "FROM users " +
-            "WHERE name = ? and password = ?";
 
-    private static final String GET_USER_FROM_USERS_BY_NAME_ROLE_PASSWORD =
-            "SELECT user_id,name,role,created_at " +
-                    "FROM users " +
-                    "WHERE name = ? and role = ? and password = ?";
-    private static final String GET_NAME_PASSWORD_FROM_USERS =
-            "SELECT name,password " +
-            "FROM users " +
-            "WHERE name = ? and password = ?";
-
-    private static final String GET_USER_BY_ID =
-            "SELECT user_id,name,role,created_at " +
-                    "FROM users " +
-                    "WHERE user_id = ?";
-    private static final String GET_USERNAME_FROM_USERS =
-            "SELECT name " +
-            "FROM users " +
-            "WHERE name = ?";
 
     public JdbcUserRepository(final Connection connection, final PasswordEncoder passwordEncoder) {
         this.connection = connection;
@@ -92,26 +71,14 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public boolean validateUser(String name, String password) {
-        try (PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS,
-                Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, name);
-            statement.setString(2, password);
-            ResultSet queryResult = statement.executeQuery();
-            return queryResult.next();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return findUsers().stream()
+                .anyMatch(user -> user.getName().equals(name)
+                        && passwordEncoder.matches(password, user.getPassword()));
     }
     @Override
     public boolean validateUsername(String username) {
-        try (PreparedStatement statement = connection.prepareStatement(GET_USERNAME_FROM_USERS,
-                Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, username);
-            ResultSet queryResult = statement.executeQuery();
-            return queryResult.next();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return findUsers().stream()
+                .anyMatch(user -> user.getName().equals(username));
     }
 
     @Override
@@ -126,7 +93,7 @@ public class JdbcUserRepository implements UserRepository {
     public Long getUserId(String name, String password) {
         return findUsers().stream()
                 .filter(user -> user.getName().equals(name)
-                        && user.getPassword().equals(password))
+                        && passwordEncoder.matches(password, user.getPassword()))
                 .map(AppUser::getUserId)
                 .findFirst()
                 .orElse(null);
@@ -135,7 +102,7 @@ public class JdbcUserRepository implements UserRepository {
     public AppUser getUser(String name, String password, String role) {
         return findUsers().stream()
                 .filter(user -> user.getName().equals(name)
-                        && user.getPassword().equals(password)
+                        && passwordEncoder.matches(password, user.getPassword())
                         && user.getRole().equals(role))
                 .findFirst()
                 .orElse(null);
@@ -145,7 +112,7 @@ public class JdbcUserRepository implements UserRepository {
     public AppUser getUser(String username, String password) {
         return findUsers().stream()
                 .filter(user -> user.getName().equals(username)
-                    && user.getPassword().equals(password))
+                    && passwordEncoder.matches(password, user.getPassword()))
                 .findFirst()
                 .orElse(null);
     }

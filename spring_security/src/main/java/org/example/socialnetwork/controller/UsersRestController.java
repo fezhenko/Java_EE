@@ -9,6 +9,7 @@ import org.example.socialnetwork.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ import java.util.List;
 public class UsersRestController {
     final UserService userService;
     final UserConverter userConverter;
+    final PasswordEncoder passwordEncoder;
 
     @GetMapping
     protected ResponseEntity<List<UserDto>> getUsers() {
@@ -43,9 +45,10 @@ public class UsersRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<UserDto> createUser(@Valid @RequestBody final UserRegistrationDto userRegistrationDto) {
-        userService.createUser(userRegistrationDto.getName(), userRegistrationDto.getPassword(),
+        userService.createUser(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(),
                 userRegistrationDto.getRole());
-        AppUser appUser = userService.getUser(userRegistrationDto.getName(), userRegistrationDto.getPassword(),
+        AppUser appUser = userService.getUser(userRegistrationDto.getUsername(),
+                userRegistrationDto.getPassword(),
                 userRegistrationDto.getRole());
         return ResponseEntity
                 .status(HttpStatus.CREATED)

@@ -3,6 +3,7 @@ package org.example.socialnetwork.service;
 import lombok.RequiredArgsConstructor;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public List<AppUser> findUsers() {
         return userRepository.findUsers();
@@ -20,7 +22,7 @@ public class UserService {
         if (userRepository.validateUser(name, password)) {
             throw new RuntimeException("User already exists");
         }
-        userRepository.createUser(name, password, role);
+        userRepository.createUser(name, passwordEncoder.encode(password), role);
     }
 
     public AppUser getUser(String name, String password, String role) {

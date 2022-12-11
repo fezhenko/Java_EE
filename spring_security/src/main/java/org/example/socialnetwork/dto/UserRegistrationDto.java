@@ -9,7 +9,7 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 public class UserRegistrationDto {
     @NotEmpty
-    String name;
+    String username;
     @NotEmpty
     String password;
     @NotEmpty
