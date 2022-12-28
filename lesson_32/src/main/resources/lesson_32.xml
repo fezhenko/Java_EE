@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://postgresql:5432/social_network"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="postgres"/>
+    </bean>
+
+    <bean id="connection" factory-bean="dataSource" factory-method="getConnection"/>
+
+    <bean id="userRepository" class="org.example.socialnetwork.repository.JdbcUserRepository">
+        <constructor-arg index="0" ref="connection"/>
+    </bean>
+
+    <bean id="userService" class="org.example.socialnetwork.service.UserService">
+        <constructor-arg index="0" ref="userRepository"/>
+    </bean>
+
+    <bean id="userRequestRepository" class="org.example.socialnetwork.repository.JdbcUserRequestRepository">
+        <constructor-arg index="0" ref="connection"/>
+    </bean>
+
+    <bean id="userRequestService" class="org.example.socialnetwork.service.UserRequestService">
+        <constructor-arg index="0" ref="userRequestRepository"/>
+    </bean>
+
+
+</beans>
