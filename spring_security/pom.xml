@@ -13,7 +13,6 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-context.version>5.3.23</spring-context.version>
-        <lombok.version>1.18.24</lombok.version>
         <spotbugs.maven.plugin.version>4.7.1.1</spotbugs.maven.plugin.version>
         <checkstyle.version>10.3.3</checkstyle.version>
         <checkstyle.maven.plugin.version>3.2.0</checkstyle.maven.plugin.version>
@@ -22,7 +21,9 @@
         <pmd.failurePriority>2</pmd.failurePriority>
         <enforcer.maven.plugin.version>3.1.0</enforcer.maven.plugin.version>
         <spring-boot-starter-web>2.7.5</spring-boot-starter-web>
+        <jstl.version>1.2</jstl.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <lombok.version>1.18.24</lombok.version>
         <lombok-mapstruct.version>0.2.0</lombok-mapstruct.version>
     </properties>
 
@@ -39,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
             <version>${spring-boot-starter-web}</version>
         </dependency>
         <dependency>
@@ -66,6 +67,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring-boot-starter-web}</version>
+        </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -122,7 +128,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.7.0</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:15432/social_network</url>
+                    <url>jdbc:postgresql://localhost:15432/postgres</url>
                     <user>postgres</user>
                     <password>postgres</password>
                     <group>true</group>

@@ -6,7 +6,6 @@ import org.example.socialnetwork.dto.AuthResultDto;
 import org.example.socialnetwork.dto.CredentialsDto;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthRestController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final Jwt jwt;
 
     @PostMapping

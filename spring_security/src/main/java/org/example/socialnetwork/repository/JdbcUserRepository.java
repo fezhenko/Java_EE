@@ -1,7 +1,6 @@
 package org.example.socialnetwork.repository;
 
 import org.example.socialnetwork.model.AppUser;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -16,7 +15,6 @@ import java.util.List;
 @Repository
 public class JdbcUserRepository implements UserRepository {
     private final Connection connection;
-    private final PasswordEncoder passwordEncoder;
     List<AppUser> users;
 
     private static final String GET_ALL_USERS =
@@ -27,9 +25,8 @@ public class JdbcUserRepository implements UserRepository {
             "VALUES(?,?,?)";
 
 
-    public JdbcUserRepository(final Connection connection, final PasswordEncoder passwordEncoder) {
+    public JdbcUserRepository(final Connection connection) {
         this.connection = connection;
-        this.passwordEncoder = passwordEncoder;
         this.users = findUsers();
     }
 
@@ -69,14 +66,14 @@ public class JdbcUserRepository implements UserRepository {
         }
     }
 
+//    @Override
+//    public boolean validateUser(String username, String password) {
+//        return findUsers().stream()
+//                .anyMatch(user -> user.getName().equals(username)
+//                        && user.getPassword().equals(password));
+//    }
     @Override
-    public boolean validateUser(String name, String password) {
-        return findUsers().stream()
-                .anyMatch(user -> user.getName().equals(name)
-                        && passwordEncoder.matches(password, user.getPassword()));
-    }
-    @Override
-    public boolean validateUsername(String username) {
+    public boolean validateUser(String username) {
         return findUsers().stream()
                 .anyMatch(user -> user.getName().equals(username));
     }
@@ -90,38 +87,38 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Long getUserId(String name, String password) {
-        return findUsers().stream()
-                .filter(user -> user.getName().equals(name)
-                        && passwordEncoder.matches(password, user.getPassword()))
-                .map(AppUser::getUserId)
-                .findFirst()
-                .orElse(null);
-    }
-    @Override
-    public AppUser getUser(String name, String password, String role) {
-        return findUsers().stream()
-                .filter(user -> user.getName().equals(name)
-                        && passwordEncoder.matches(password, user.getPassword())
-                        && user.getRole().equals(role))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public AppUser getUser(String username, String password) {
-        return findUsers().stream()
-                .filter(user -> user.getName().equals(username)
-                    && passwordEncoder.matches(password, user.getPassword()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
     public AppUser getUserById(Long userId) {
         return findUsers().stream()
-                .filter(user -> user.getUserId() == userId)
+                .filter(user -> user.getUserId().equals(userId))
                 .findFirst()
                 .orElse(null);
     }
+
+//    @Override
+//    public Long getUserId(String name, String password) {
+//        return findUsers().stream()
+//                .filter(user -> user.getName().equals(name)
+//                        && passwordEncoder.matches(password, user.getPassword()))
+//                .map(AppUser::getUserId)
+//                .findFirst()
+//                .orElse(null);
+//    }
+//    @Override
+//    public AppUser getUser(String name, String password, String role) {
+//        return findUsers().stream()
+//                .filter(user -> user.getName().equals(name)
+//                        && passwordEncoder.matches(password, user.getPassword())
+//                        && user.getRole().equals(role))
+//                .findFirst()
+//                .orElse(null);
+//    }
+//
+//    @Override
+//    public AppUser getUser(String username, String password) {
+//        return findUsers().stream()
+//                .filter(user -> user.getName().equals(username)
+//                    && passwordEncoder.matches(password, user.getPassword()))
+//                .findFirst()
+//                .orElse(null);
+//    }
 }

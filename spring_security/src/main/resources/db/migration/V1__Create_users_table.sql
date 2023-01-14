@@ -8,9 +8,10 @@ CREATE TABLE IF NOT EXISTS users
     PRIMARY KEY (user_id)
 );
 
+-- password: 123
 INSERT INTO users (name, role, password)
-VALUES ('Employee', 'EMPLOYEE', '123');
+VALUES ('Employee', 'EMPLOYEE', '$2a$10$cWdjJViYxnr6BL4BujyZv.6jZgDhf9t3o7N0ww5Nn3SdBcoq.hXPG');
 INSERT INTO users (name, role, password)
-VALUES ('Manager', 'MANAGER', '123');
+VALUES ('Manager', 'MANAGER', '$2a$10$cWdjJViYxnr6BL4BujyZv.6jZgDhf9t3o7N0ww5Nn3SdBcoq.hXPG');
 INSERT INTO users (name, role, password)
-VALUES ('Admin', 'ADMIN', '123');
+VALUES ('Admin', 'ADMIN', '$2a$10$cWdjJViYxnr6BL4BujyZv.6jZgDhf9t3o7N0ww5Nn3SdBcoq.hXPG');

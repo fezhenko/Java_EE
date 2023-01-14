@@ -1,6 +1,5 @@
 package org.example.socialnetwork.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 

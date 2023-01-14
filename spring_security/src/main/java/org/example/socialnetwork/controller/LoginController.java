@@ -37,7 +37,7 @@ public class LoginController {
             return "login";
         }
         if (userService.validateUser(userLoginDto.getUsername(), userLoginDto.getPassword())) {
-            authContext.setAuthUserId(userService.getUser(userLoginDto.getUsername(), userLoginDto.getPassword()).getUserId());
+            authContext.setAuthUserId(userService.getUser(userLoginDto.getUsername()).getUserId());
             return "redirect:users";
         }
         return "redirect:registration";

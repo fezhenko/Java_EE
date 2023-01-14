@@ -28,7 +28,7 @@ public class UserController {
     }
 
     protected void createUserFromRegistrationPage(String name, String role, String password) {
-        if (userService.validateUsername(name)) {
+        if (userService.validateUser(name)) {
             new RedirectView("login");
             return;
         }

@@ -18,27 +18,28 @@ public class UserService {
         return userRepository.findUsers();
     }
 
-    public void createUser(String name, String password, String role) {
-        if (userRepository.validateUser(name, password)) {
-            throw new RuntimeException("User already exists");
+    public void createUser(String username, String password, String role) {
+        if (validateUser(username)) {
+            throw new RuntimeException("User with this username already exists");
         }
-        userRepository.createUser(name, passwordEncoder.encode(password), role);
+        userRepository.createUser(username, passwordEncoder.encode(password), role);
     }
 
-    public AppUser getUser(String name, String password, String role) {
-        return userRepository.getUser(name, password, role);
+    public boolean validateUser(String username, String password) {
+        AppUser appUser = userRepository.getUser(username);
+        return passwordEncoder.matches(password, appUser.getPassword());
     }
 
-    public boolean validateUser(String name, String password) {
-        return userRepository.validateUser(name, password);
+    public boolean validateUser(String username) {
+        return userRepository.validateUser(username);
     }
 
-    public boolean validateUsername(String username) {
-        return userRepository.validateUsername(username);
-    }
-
-    public Long getUserId(String name, String password) {
-        return userRepository.getUserId(name, password);
+    public Long getUserId(String username, String password) {
+        AppUser appUser = userRepository.getUser(username);
+        if (passwordEncoder.matches(password, appUser.getPassword())) {
+            return appUser.getUserId();
+        }
+        throw new RuntimeException("Invalid credentials!");
     }
 
     public AppUser getUserById(Long userId) {
@@ -50,6 +51,18 @@ public class UserService {
     }
 
     public AppUser getUser(String username, String password) {
-        return userRepository.getUser(username, password);
+        final AppUser appUser = userRepository.getUser(username);
+        if (passwordEncoder.matches(password, appUser.getPassword())) {
+            return appUser;
+        }
+        throw new RuntimeException("Invalid credentials!");
+    }
+
+    public AppUser getUser(String username, String password, String role) {
+        final AppUser appUser = userRepository.getUser(username);
+        if (passwordEncoder.matches(password, appUser.getPassword()) && appUser.getRole().equals(role)) {
+            return appUser;
+        }
+        throw new RuntimeException("Invalid password or role");
     }
 }

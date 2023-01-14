@@ -12,4 +12,7 @@ management:
         include: '*'
 
 jwt:
-  secret: "qwerty"
+  secret: "hello@world!"
+
+server:
+  port: 8081
