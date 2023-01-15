@@ -10,10 +10,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FriendsService {
-    FriendsRepository friendsRepository;
+    private final FriendsRepository friendsRepository;
 
-    public List<AppUser> findFriends() {
-        return friendsRepository.findFriends();
+    public List<AppUser> findFriends(Long userId) {
+        return friendsRepository.findFriends(userId);
     }
     public void addFriend(Long friendId, Long requestId) {
         friendsRepository.addFriend(friendId, requestId);
@@ -25,5 +25,8 @@ public class FriendsService {
 
     public AppUser getFriend(Long friendId) {
         return friendsRepository.getFriend(friendId);
+    }
+    public AppUser getFriend(Long userId, Long friendId) {
+        return friendsRepository.getFriend(userId, friendId);
     }
 }

@@ -3,14 +3,13 @@ package org.example.socialnetwork.controller;
 import lombok.AllArgsConstructor;
 import org.example.socialnetwork.dto.UserLoginDto;
 import org.example.socialnetwork.service.UserService;
-import org.example.socialnetwork.session.AuthContext;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 
@@ -22,7 +21,6 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class LoginController {
     final UserService userService;
-    final AuthContext authContext;
 
     @GetMapping
     protected String getLoginForm(Model model) {
@@ -37,7 +35,6 @@ public class LoginController {
             return "login";
         }
         if (userService.validateUser(userLoginDto.getUsername(), userLoginDto.getPassword())) {
-            authContext.setAuthUserId(userService.getUser(userLoginDto.getUsername()).getUserId());
             return "redirect:users";
         }
         return "redirect:registration";

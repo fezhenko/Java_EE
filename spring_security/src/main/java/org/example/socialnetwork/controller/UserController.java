@@ -3,7 +3,6 @@ package org.example.socialnetwork.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.service.UserService;
-import org.example.socialnetwork.session.AuthContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ import java.util.List;
 public class UserController {
 
     final UserService userService;
-    final AuthContext authContext;
 
     @GetMapping
     protected String getUsers(Model model) {
@@ -34,7 +32,6 @@ public class UserController {
         }
         try {
             userService.createUser(name, role, password);
-            authContext.setAuthUserId(userService.getUserId(name, password));
         } catch (Exception ex) {
             new RedirectView("error");
         }

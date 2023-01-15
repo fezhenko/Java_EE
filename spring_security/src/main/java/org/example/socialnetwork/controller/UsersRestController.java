@@ -43,6 +43,7 @@ public class UsersRestController {
                 .ok(userConverter.toDto(appUser));
     }
 
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<UserDto> createUser(@Valid @RequestBody final UserRegistrationDto userRegistrationDto) {
         userService.createUser(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(),

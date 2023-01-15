@@ -6,9 +6,9 @@ import org.example.socialnetwork.dto.UserDto;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.service.FriendsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -17,19 +17,24 @@ import java.util.List;
 @RequestMapping("/api/v1/friends")
 @RequiredArgsConstructor
 public class FriendsRestController {
-    FriendsService friendsService;
-    UserConverter userConverter;
+    private final FriendsService friendsService;
+    private final UserConverter userConverter;
 
-    @GetMapping
-    public ResponseEntity<List<UserDto>> getFriends() {
-        List<AppUser> friendsList = friendsService.findFriends();
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<UserDto>> getFriends(@PathVariable Long userId) {
+        List<AppUser> friendsList = friendsService.findFriends(userId);
         return ResponseEntity.ok(userConverter.toDto(friendsList));
     }
 
-    @GetMapping("/{friendId}")
-    public ResponseEntity<UserDto> getFriend(@PathVariable Long friendId) {
-        AppUser friend = friendsService.getFriend(friendId);
+    @GetMapping("/{userId}/{friendId}")
+    public ResponseEntity<UserDto> getFriend(@PathVariable Long userId, Long friendId) {
+        AppUser friend = friendsService.getFriend(userId, friendId);
         return ResponseEntity
                 .ok(userConverter.toDto(friend));
     }
+
+//
+//    @PostMapping("/{userId}/add/{friendId}")
+//    @PostMapping("/{userId}/approve/{friendId}")
+//    @PostMapping("/{userId}/decline/{friendId}")
 }
