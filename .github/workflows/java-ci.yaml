@@ -18,4 +18,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - run: mvn -B package --file pom.xml
+      - run: mvn -f github_actions/pom.xml clean verify
+      - run: mvn -f github_actions/pom.xml clean package
+          
