@@ -2,14 +2,19 @@ package org.example.socialnetwork.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.socialnetwork.converter.UserConverter;
+import org.example.socialnetwork.dto.FriendDto;
 import org.example.socialnetwork.dto.UserDto;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.service.FriendsService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -27,14 +32,31 @@ public class FriendsRestController {
     }
 
     @GetMapping("/{userId}/{friendId}")
-    public ResponseEntity<UserDto> getFriend(@PathVariable Long userId, Long friendId) {
+    public ResponseEntity<UserDto> getFriend(@PathVariable Long userId, @PathVariable Long friendId) {
         AppUser friend = friendsService.getFriend(userId, friendId);
         return ResponseEntity
                 .ok(userConverter.toDto(friend));
     }
 
-//
-//    @PostMapping("/{userId}/add/{friendId}")
-//    @PostMapping("/{userId}/approve/{friendId}")
-//    @PostMapping("/{userId}/decline/{friendId}")
+    @PostMapping("/{userId}/add/{friendId}")
+    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
+    public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+        friendsService.addFriend(userId, friendId);
+    }
+
+    @PostMapping("/{userId}/decline")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeFriend(
+            @PathVariable Long userId,
+            @RequestBody final FriendDto friendDto) {
+        friendsService.removeFriend(userId, friendDto.getFriendId());
+    }
+
+    @PostMapping("/{userId}/approve")
+    @ResponseStatus(HttpStatus.OK)
+    public void approveFriend(
+            @PathVariable Long userId,
+            @RequestBody final FriendDto friendDto) {
+        friendsService.addFriend(userId, friendDto.getFriendId());
+    }
 }

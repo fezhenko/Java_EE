@@ -18,15 +18,11 @@ public class FriendsService {
     public void addFriend(Long friendId, Long requestId) {
         friendsRepository.addFriend(friendId, requestId);
     }
-
-    public void removeFriend(Long friendId) {
-        friendsRepository.removeFriend(friendId);
-    }
-
-    public AppUser getFriend(Long friendId) {
-        return friendsRepository.getFriend(friendId);
-    }
     public AppUser getFriend(Long userId, Long friendId) {
         return friendsRepository.getFriend(userId, friendId);
+    }
+
+    public void removeFriend(Long userId, Long friendId) {
+        friendsRepository.removeFriend(userId, friendId);
     }
 }
