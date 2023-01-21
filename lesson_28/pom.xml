@@ -260,7 +260,7 @@
                                     <version>17</version>
                                 </requireJavaVersion>
                                 <requireOS>
-                                    <family>windows</family>
+                                    <family>mac</family>
                                 </requireOS>
                             </rules>
                         </configuration>
