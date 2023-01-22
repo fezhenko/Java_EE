@@ -6,6 +6,9 @@ on:
     branches:
       - main
   pull_request:
+  
+env:
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 
 jobs:
   build:
@@ -18,8 +21,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
-      - run: mvn -f ${GITHUB_REF##*/}/pom.xml clean verify
-      - run: mvn -f ${GITHUB_REF##*/}/pom.xml clean package
+      - run: mvn -f ${{ env.BRANCH_NAME }}/pom.xml clean verify
+      - run: mvn -f ${{ env.BRANCH_NAME }}/pom.xml clean package
           
