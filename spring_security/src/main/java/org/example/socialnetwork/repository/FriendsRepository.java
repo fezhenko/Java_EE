@@ -24,20 +24,14 @@ public interface FriendsRepository extends Repository<AppUser, Long> {
     void addFriend(@Param("friendId") Long friendId,
                    @Param("requestId") Long requestId);
 
-    @Modifying
-    @Query("DELETE FROM friends f USING users u WHERE f.friend_user_id = :friendId")
-    void removeFriend(@Param("friendId") Long friendId);
 
-    @Query("select u.user_id, u.name, u.role, u.created_at from users u" +
-            " join friends f on u.user_id=:friendId")
-    AppUser getFriend(Long friendId);
-
-    @Query("(select u2.user_id, u2.name, u2.role, u2.created_at from\n" +
-            "    (select f.friend_user_id from friends f\n" +
-            "        join requests r on f.request_id = r.request_id\n" +
-            "        join users u on r.request_user_id = u.user_id\n" +
-            "                             where r.is_approved = true and u.user_id = :userId) get_friend_id\n" +
-            "        join users u2 on u2.user_id = :friendId)")
+    @Query("""
+            (select u2.user_id, u2.name, u2.role, u2.created_at from
+                (select f.friend_user_id from friends f
+                    join requests r on f.request_id = r.request_id
+                    join users u on r.request_user_id = u.user_id
+                                         where r.is_approved = true and u.user_id = :userId) get_friend_id
+                    join users u2 on u2.user_id = :friendId)""")
     AppUser getFriend(Long userId, Long friendId);
 
     @Modifying

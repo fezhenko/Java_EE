@@ -1,40 +1,34 @@
 package org.example.socialnetwork.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.socialnetwork.model.AppUser;
-import org.example.socialnetwork.repository.FriendRequest;
+import org.example.socialnetwork.model.UserRequest;
+import org.example.socialnetwork.repository.FriendRequestRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserRequestService {
-    private final FriendRequest friendRequest;
+    private final FriendRequestRepository friendRequestRepository;
 
-    public void approveRequest(Long requestedUserId, Long receivedUserId) {
-        friendRequest.approveRequest(requestedUserId, receivedUserId);
+    public List<UserRequest> getUserRequests(Long userId) {
+        return friendRequestRepository.getUserRequests(userId);
     }
 
-    public void declineRequest(Long requestedUserId, Long receivedUserId) {
-        friendRequest.deleteRequest(requestedUserId, receivedUserId);
+    public UserRequest getUserRequest(Long requestId) {
+        return friendRequestRepository.getUserRequest(requestId);
     }
 
-    public List<AppUser> findUsersApprovedRequest(Long userId) {
-        return friendRequest.findUsersApprovedRequest(userId);
+    public void approveRequest(Long requestId) {
+        friendRequestRepository.approveRequest(requestId);
     }
 
-    public List<AppUser> findNotApprovedUserRequests(Long userId) {
-        return friendRequest.findNotApprovedRequestsByUser(userId);
+    public void declineRequest(Long requestId) {
+        friendRequestRepository.declineRequest(requestId);
     }
 
-
-    public void saveUserRequest(Long requestedUserId, Long receivedUserId) throws SQLException {
-        friendRequest.createRequest(requestedUserId, receivedUserId);
-    }
-
-    public boolean isRequestSend(Long requestedUserId, Long receivedUserId) {
-        return friendRequest.isRequestApproved(requestedUserId, receivedUserId);
+    public void deleteRequest(Long requestId) {
+        friendRequestRepository.deleteRequest(requestId);
     }
 }
