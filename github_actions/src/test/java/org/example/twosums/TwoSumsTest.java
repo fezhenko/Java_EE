@@ -14,7 +14,7 @@ public class TwoSumsTest {
     static Stream<Arguments> generateData() {
         return Stream.of(
                 Arguments.of(new int[]{1, 2, 3}, 5, new int[]{1, 2}),
-                Arguments.of(new int[]{55, 56, 57, 58, 59}, 99, null)
+                Arguments.of(new int[]{55, 56, 57, 58, 59}, 99, null),
                 Arguments.of(null, 1, null)
         );
     }
