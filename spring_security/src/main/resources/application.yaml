@@ -15,4 +15,4 @@ jwt:
   secret: "hello@world!"
 
 server:
-  port: 8080
+  port: 8081

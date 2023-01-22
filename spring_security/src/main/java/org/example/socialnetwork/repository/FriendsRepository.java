@@ -20,22 +20,22 @@ public interface FriendsRepository extends Repository<AppUser, Long> {
     List<AppUser> findFriends(@Param("userId") Long userId);
 
     @Modifying
-    @Query("INSERT INTO friends (friend_user_id, request_id) VALUES (:friendId, :requestid)")
+    @Query("INSERT INTO friends (id, friend_user_id, request_id, created_at)" +
+            " VALUES (default, :friendId, :requestId, now())")
     void addFriend(@Param("friendId") Long friendId,
                    @Param("requestId") Long requestId);
 
 
-    @Query("""
-            (select u2.user_id, u2.name, u2.role, u2.created_at from
-                (select f.friend_user_id from friends f
-                    join requests r on f.request_id = r.request_id
-                    join users u on r.request_user_id = u.user_id
-                                         where r.is_approved = true and u.user_id = :userId) get_friend_id
-                    join users u2 on u2.user_id = :friendId)""")
-    AppUser getFriend(Long userId, Long friendId);
+    @Query("(select u2.user_id, u2.name, u2.role, u2.created_at from " +
+                "(select f.friend_user_id from friends f " +
+                    "join requests r on f.request_id = r.request_id " +
+                    "join users u on r.request_user_id = u.user_id " +
+                         "where r.is_approved = true and u.user_id = :userId) get_friend_id " +
+                "join users u2 on u2.user_id = :friendId) ")
+    AppUser getFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
     @Modifying
     @Query("DELETE FROM friends f USING users u WHERE u.user_id = :userId AND f.friend_user_id = :friendId")
-    void removeFriend(Long userId, Long friendId);
+    void removeFriend(@Param("userId") Long userId, @Param("friendId") Long friendId);
 
 }
