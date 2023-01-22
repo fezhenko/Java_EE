@@ -18,6 +18,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
-      - run: mvn -f github_actions/pom.xml clean verify
-      - run: mvn -f github_actions/pom.xml clean package
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
+      - run: mvn -f ${GITHUB_REF##*/}/pom.xml clean verify
+      - run: mvn -f ${GITHUB_REF##*/}/pom.xml clean package
           
