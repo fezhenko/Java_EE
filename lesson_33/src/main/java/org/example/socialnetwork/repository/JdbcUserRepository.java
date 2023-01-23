@@ -1,7 +1,6 @@
 package org.example.socialnetwork.repository;
 
 import lombok.RequiredArgsConstructor;
-import org.example.socialnetwork.exceptions.UserNotFoundException;
 import org.example.socialnetwork.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -130,19 +129,15 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Long getUserId(String name, String password) {
-        try (PreparedStatement prepareStatement = connection.prepareStatement(GET_USER_FROM_USERS)) {
-            prepareStatement.setString(1, name);
-            prepareStatement.setString(2, password);
-            ResultSet rs = prepareStatement.executeQuery();
-            if (rs.next()) {
-                return rs.getLong("user_id");
-            }
-            throw new UserNotFoundException("User with name:" + name + " is not found");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public Long getUserId(String username) {
+        return findUsers().stream()
+                .filter(user -> user.getName().equals(username))
+                .findFirst()
+                .map(User::getUserId)
+                .orElse(null);
+
     }
+
     @Override
     public boolean validateUser(String name, String password) {
         try (PreparedStatement statement = connection.prepareStatement(GET_NAME_PASSWORD_FROM_USERS,
@@ -155,6 +150,7 @@ public class JdbcUserRepository implements UserRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public boolean validateUsername(String username) {
         try (PreparedStatement statement = connection.prepareStatement(GET_USERNAME_FROM_USERS,

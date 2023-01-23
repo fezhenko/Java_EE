@@ -1,4 +1,4 @@
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Friend requests</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" />
@@ -21,7 +21,7 @@
                                     <th></th>
                                 </tr>
                                 <tbody>
-                                    <tr th:each="requestedUser: ${requestedAppUsers}">
+                                    <tr th:each="requestedUser: ${requestedUsers}">
                                         <td>
                                             <span th:text="${requestedUser.userId}"></span>
                                             <input hidden th:name="userId" th:value="${requestedUser.userId}"/>

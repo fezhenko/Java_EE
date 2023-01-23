@@ -22,8 +22,8 @@ public class UserController {
 
     @GetMapping
     protected String getUsers(Model model) {
-        final List<User> users = userService.findUsers();
-        model.addAttribute("users", users);
+        final List<User> appUsers = userService.findUsers();
+        model.addAttribute("users", appUsers);
         return "users";
     }
 
@@ -35,9 +35,11 @@ public class UserController {
         try {
             userService.createUser(name, role, password);
             authContext.setAuthorized(true);
-            authContext.setAuthUserId(userService.getUserId(name, password));
+            authContext.setAuthUserId(userService.getUserId(name));
         } catch (Exception ex) {
             new RedirectView("error");
         }
     }
+
+
 }

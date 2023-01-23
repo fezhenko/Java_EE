@@ -43,10 +43,12 @@ public class FriendRequestsController {
         //TODO:сделать пост - при аппруе создаю в таблице френдс запись
             final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
             model.addAttribute("requestedUsers", requestedUsers);
+            model.addAttribute("friendRequestsDto", new FriendRequestsDto());
             return "friendRequests";
         }
         final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
         model.addAttribute("requestedUsers", requestedUsers);
+        model.addAttribute("friendRequestsDto", new FriendRequestsDto());
         return "friendRequests";
     }
 
@@ -58,10 +60,12 @@ public class FriendRequestsController {
             userRequestService.declineRequest(friendRequestsDto.getUserId(), authContext.getAuthUserId());
             final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
             model.addAttribute("requestedUsers", requestedUsers);
+            model.addAttribute("friendRequestsDto", new FriendRequestsDto());
             return "friendRequests";
         }
         final List<User> requestedUsers = userRequestService.findNotApprovedUserRequests(authContext.getAuthUserId());
         model.addAttribute("requestedUsers", requestedUsers);
+        model.addAttribute("friendRequestsDto", new FriendRequestsDto());
         return "friendRequests";
     }
 }

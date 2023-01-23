@@ -11,7 +11,7 @@ public interface UserRepository {
 
     User getUser(String name, String role, String password);
 
-    Long getUserId(String username, String password);
+    Long getUserId(String username);
 
     boolean validateUser(String name, String password);
 

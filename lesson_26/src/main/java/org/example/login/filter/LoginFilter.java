@@ -22,11 +22,10 @@ public class LoginFilter implements Filter {
 
     private Set<String> availableUrls;
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         availableUrls = new HashSet<>();
         availableUrls.add("/login");
         availableUrls.add("/registration");
-        Filter.super.init(filterConfig);
     }
 
     @Override

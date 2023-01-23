@@ -18,11 +18,12 @@ public class UserService {
         return userRepository.findUsers();
     }
 
-    public void createUser(String username, String password, String role) {
+    public AppUser createUser(String username, String password, String role) {
         if (validateUser(username)) {
             throw new RuntimeException("User with this username already exists");
         }
         userRepository.createUser(username, passwordEncoder.encode(password), role);
+        return getUser(username);
     }
 
     public boolean validateUser(String username, String password) {

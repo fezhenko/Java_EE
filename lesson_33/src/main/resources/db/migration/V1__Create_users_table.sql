@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS appUsers
+CREATE TABLE IF NOT EXISTS users
 (
     user_id BIGSERIAL NOT NULL UNIQUE,
     name VARCHAR NOT NULL,
@@ -8,9 +8,9 @@ CREATE TABLE IF NOT EXISTS appUsers
     PRIMARY KEY (user_id)
 );
 
-INSERT INTO appUsers (name, role, password)
+INSERT INTO users (name, role, password)
 VALUES ('Employee', 'EMPLOYEE', '123');
-INSERT INTO appUsers (name, role, password)
+INSERT INTO users (name, role, password)
 VALUES ('Manager', 'MANAGER', '123');
-INSERT INTO appUsers (name, role, password)
+INSERT INTO users (name, role, password)
 VALUES ('Admin', 'ADMIN', '123');

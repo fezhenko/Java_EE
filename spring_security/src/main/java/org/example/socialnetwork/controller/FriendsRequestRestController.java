@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/friendRequests")
+@RequestMapping("/api/v1/friend-requests")
 public class FriendsRequestRestController {
 
     private final UserRequestService userRequestService;

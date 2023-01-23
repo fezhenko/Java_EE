@@ -63,11 +63,6 @@
             <version>${spring-context.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-            <version>${spring-boot-starter-web}</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
@@ -122,7 +117,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>9.7.0</version>
                 <configuration>
-                    <url>jdbc:postgresql://localhost:15432/social_network</url>
+                    <url>jdbc:postgresql://localhost:15432/postgres</url>
                     <user>postgres</user>
                     <password>postgres</password>
                     <group>true</group>

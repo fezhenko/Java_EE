@@ -5,7 +5,7 @@ import org.example.socialnetwork.model.User;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface FriendRequest {
+public interface FriendRequestRepository {
     List<User> findUsersApprovedRequest(Long userId);
     List<User> findNotApprovedRequestsByUser(Long userId);
 

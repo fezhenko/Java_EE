@@ -35,8 +35,8 @@ public class UserService {
         return userRepository.validateUsername(username);
     }
 
-    public Long getUserId(String name, String password) {
-        return userRepository.getUserId(name, password);
+    public Long getUserId(String name) {
+        return userRepository.getUserId(name);
     }
 
     public User getUserById(Long userId) {

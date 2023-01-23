@@ -46,10 +46,7 @@ public class UsersRestController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     protected ResponseEntity<UserDto> createUser(@Valid @RequestBody final UserRegistrationDto userRegistrationDto) {
-        userService.createUser(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(),
-                userRegistrationDto.getRole());
-        AppUser appUser = userService.getUser(userRegistrationDto.getUsername(),
-                userRegistrationDto.getPassword(),
+        AppUser appUser = userService.createUser(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(),
                 userRegistrationDto.getRole());
         return ResponseEntity
                 .status(HttpStatus.CREATED)

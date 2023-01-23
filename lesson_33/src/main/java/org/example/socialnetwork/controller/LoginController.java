@@ -30,14 +30,14 @@ public class LoginController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    protected String tryToLogin(
+    protected String login(
             @Valid @ModelAttribute("userLoginDto") final UserLoginDto userLoginDto, final BindingResult result) {
         if (result.hasErrors()) {
             return "login";
         }
         if (userService.validateUser(userLoginDto.getName(), userLoginDto.getPassword())) {
             authContext.setAuthorized(true);
-            authContext.setAuthUserId(userService.getUserId(userLoginDto.getName(), userLoginDto.getPassword()));
+            authContext.setAuthUserId(userService.getUserId(userLoginDto.getName()));
             return "redirect:users";
         }
         return "redirect:registration";

@@ -31,17 +31,11 @@ public class FriendsRestController {
         return ResponseEntity.ok(userConverter.toDto(friendsList));
     }
 
-    @GetMapping("/{userId}/{friendId}")
-    public ResponseEntity<UserDto> getFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+    @GetMapping("/{friendId}/users/{userId} ")
+    public ResponseEntity<UserDto> getFriend(@PathVariable Long friendId, @PathVariable Long userId) {
         AppUser friend = friendsService.getFriend(userId, friendId);
         return ResponseEntity
                 .ok(userConverter.toDto(friend));
-    }
-
-    @PostMapping("/{userId}/add/{friendId}")
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-    public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
-        friendsService.addFriend(userId, friendId);
     }
 
     @PostMapping("/{userId}/decline")

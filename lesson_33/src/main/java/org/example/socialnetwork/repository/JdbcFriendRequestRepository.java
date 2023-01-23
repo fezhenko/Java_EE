@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 @Repository
 @RequiredArgsConstructor
-public class JdbcFriendRequest implements FriendRequest {
+public class JdbcFriendRequestRepository implements FriendRequestRepository {
     private final Connection connection;
     private static final String GET_USERS_WHO_APPROVED_REQUESTS =
             "SELECT DISTINCT u.user_id, u.name, u.role, u.created_at " +
@@ -28,7 +28,7 @@ public class JdbcFriendRequest implements FriendRequest {
             "WHERE r.received_user_id = ? AND is_approved = false";
     private static final String CREATE_REQUEST =
             "INSERT INTO requests(request_user_id,received_user_id,is_approved)" +
-            "SELECT ?,?,false;";
+            "VALUES (?,?,false)";
     private static final String GET_USER_REQUEST =
             "SELECT is_approved " +
             "FROM requests r " +
@@ -43,9 +43,65 @@ public class JdbcFriendRequest implements FriendRequest {
             "USING users u " +
             "WHERE r.request_user_id = ? and r.received_user_id = ? and is_approved=false;";
 
-    private User createUser(Long userId, String name, String role, Date createdAt) {
-        return new User(userId, name, role, createdAt);
+    @Override
+    public List<User> findUsersApprovedRequest(Long userId) {
+        return getUsers(userId, GET_USERS_WHO_APPROVED_REQUESTS);
     }
+
+    @Override
+    public List<User> findNotApprovedRequestsByUser(Long userId) {
+        return getUsers(userId, GET_USERS_FOR_WHOM_FRIEND_REQUESTS_IS_SENT);
+    }
+
+    @Override
+    public void createRequest(Long requestedUserId, Long receivedUserId) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_REQUEST,
+                Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean isRequestApproved(Long requestedUserId, Long receivedUserId) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_REQUEST,
+                Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
+            ResultSet rs = preparedStatement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void approveRequest(Long requestedUserId, Long receivedUserId) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(APPROVE_USER_REQUEST,
+                Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteRequest(Long requestedUserId, Long receivedUserId) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_REQUEST,
+                Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setLong(1, requestedUserId);
+            preparedStatement.setLong(2, receivedUserId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private List<User> getUsers(Long userId, String getUsersRequests) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(getUsersRequests,
                 Statement.RETURN_GENERATED_KEYS)) {
@@ -65,57 +121,9 @@ public class JdbcFriendRequest implements FriendRequest {
             throw new RuntimeException(e);
         }
     }
-    @Override
-    public List<User> findUsersApprovedRequest(Long userId) {
-        return getUsers(userId, GET_USERS_WHO_APPROVED_REQUESTS);
+
+    private User createUser(Long userId, String name, String role, Date createdAt) {
+        return new User(userId, name, role, createdAt);
     }
-    @Override
-    public List<User> findNotApprovedRequestsByUser(Long userId) {
-        return getUsers(userId, GET_USERS_FOR_WHOM_FRIEND_REQUESTS_IS_SENT);
-    }
-    @Override
-    public void createRequest(Long requestedUserId, Long receivedUserId) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_REQUEST,
-                Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, requestedUserId);
-            preparedStatement.setLong(2, receivedUserId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @Override
-    public boolean isRequestApproved(Long requestedUserId, Long receivedUserId) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_REQUEST,
-                Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, requestedUserId);
-            preparedStatement.setLong(2, receivedUserId);
-            ResultSet rs = preparedStatement.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @Override
-    public void approveRequest(Long requestedUserId, Long receivedUserId) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(APPROVE_USER_REQUEST,
-                Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, requestedUserId);
-            preparedStatement.setLong(2, receivedUserId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    @Override
-    public void deleteRequest(Long requestedUserId, Long receivedUserId) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_REQUEST,
-                Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setLong(1, requestedUserId);
-            preparedStatement.setLong(2, receivedUserId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }
