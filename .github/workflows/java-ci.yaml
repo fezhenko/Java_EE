@@ -22,5 +22,4 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - run: mvn -f ${{ env.BRANCH_NAME }}/pom.xml clean verify
-      - run: mvn -f ${{ env.BRANCH_NAME }}/pom.xml clean package
-          
+      
