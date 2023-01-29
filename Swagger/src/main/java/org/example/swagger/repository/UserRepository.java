@@ -31,12 +31,11 @@ public interface UserRepository extends Repository<AppUser, Long> {
     AppUser getUserById(@Param("userId") Long userId);
 
     @Modifying
-    @Query("UPDATE users SET name = :username, password = :password, role = :role " +
+    @Query("UPDATE users SET name = :username, role = :role " +
             "WHERE user_id = :userId")
     AppUser updateUser(
             @Param("userId") Long userId,
             @Param("username") String username,
-            @Param("password") String password,
             @Param("role") String role);
 
     @Modifying

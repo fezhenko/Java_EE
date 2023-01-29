@@ -71,4 +71,12 @@ public class UserService {
         }
         throw new RuntimeException("Invalid password or role");
     }
+
+    public AppUser updateUser(Long userId, String username, String role) {
+        return userRepository.updateUser(userId, username, role);
+    }
+
+    public void deleteUser(Long userId) {
+        userRepository.deleteAppUserByUserId(userId);
+    }
 }
