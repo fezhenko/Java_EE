@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>spring_security_with_JWT</artifactId>
+    <artifactId>Swagger</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -25,6 +25,8 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <lombok.version>1.18.24</lombok.version>
         <lombok-mapstruct.version>0.2.0</lombok-mapstruct.version>
+        <swagger-annotation.version>2.2.7</swagger-annotation.version>
+        <openapi-ui.version>1.6.9</openapi-ui.version>
     </properties>
 
     <dependencies>
@@ -67,6 +69,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring-boot-starter-web}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${openapi-ui.version}</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
