@@ -1,14 +1,16 @@
 package org.example.swagger.dto;
 
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.constraints.NotEmpty;
 
 @Jacksonized
-@Data
-public class UserRegistrationDto {
+@Value
+@Builder
+public class CreateUserDto {
 
     @NotEmpty
     String username;

@@ -7,15 +7,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.example.swagger.converter.UserConverter;
+import org.example.swagger.dto.CreateUserDto;
 import org.example.swagger.dto.UpdateUserDto;
 import org.example.swagger.dto.UserDto;
-import org.example.swagger.dto.UserRegistrationDto;
 import org.example.swagger.model.AppUser;
 import org.example.swagger.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,10 +33,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
+@Validated
 public class UsersRestController {
     final UserService userService;
     final UserConverter userConverter;
-    final PasswordEncoder passwordEncoder;
 
     @Tag(name = "Users")
     @Operation(summary = "Get all existed users from database")
@@ -56,8 +56,17 @@ public class UsersRestController {
     @Tag(name = "Users")
     @Operation(summary = "Get user from DB by userId")
     @Parameter(description = "Provide user Id to get rest f information about user")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Users successfully found"),
+                    @ApiResponse(responseCode = "400", description = "Verify userId value"),
+                    @ApiResponse(responseCode = "500", description = "Something Went Wrong")
+            })
     @GetMapping("/{userId}")
-    protected ResponseEntity<UserDto> getUser(@PathVariable Long userId) {
+    protected ResponseEntity<UserDto> getUser(@Valid @PathVariable final Long userId) {
+        if (userId == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         final AppUser appUser = userService.getUserById(userId);
         return ResponseEntity
                 .ok(userConverter.toDto(appUser));
@@ -66,9 +75,9 @@ public class UsersRestController {
     @Tag(name = "Users")
     @Operation(summary = "Endpoint to create a user in the system")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    protected ResponseEntity<UserDto> createUser(@Valid @RequestBody final UserRegistrationDto userRegistrationDto) {
-        AppUser appUser = userService.createUser(userRegistrationDto.getUsername(), userRegistrationDto.getPassword(),
-                userRegistrationDto.getRole());
+    protected ResponseEntity<UserDto> createUser(@Valid @RequestBody final CreateUserDto createUserDto) {
+        AppUser appUser = userService.createUser(createUserDto.getUsername(), createUserDto.getPassword(),
+                createUserDto.getRole());
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userConverter.toDto(appUser));
