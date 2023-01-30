@@ -17,6 +17,8 @@
         <checkstyle.maven.plugin.version>3.2.0</checkstyle.maven.plugin.version>
         <checkstyle.config.location>codequality/checkstyle.xml</checkstyle.config.location>
         <pmd.maven.plugin.version>3.18.0</pmd.maven.plugin.version>
+        <pmd.failurePriority>2</pmd.failurePriority>
+        <sourceEncoding>UTF-8</sourceEncoding>
         <org.mockito.version>4.4.0</org.mockito.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -172,9 +174,7 @@
                 <version>3.19.0</version>
                 <configuration>
                     <linkXRef>false</linkXRef>
-                    <sourceEncoding>UTF-8</sourceEncoding>
                     <includeTests>false</includeTests>
-                    <!--suppress UnresolvedMavenProperty -->
                     <failurePriority>${pmd.failurePriority}</failurePriority>
                     <failOnViolation>true</failOnViolation>
                     <rulesets>

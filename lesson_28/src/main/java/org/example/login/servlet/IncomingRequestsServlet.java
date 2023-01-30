@@ -38,15 +38,12 @@ public class IncomingRequestsServlet extends HttpServlet {
         HttpSession session = req.getSession();
         Long userId = (Long) session.getAttribute("userId");
         Long requestedUserId = Long.valueOf(req.getParameter("requestedUserId"));
-        try {
-            if (userRequestService.isRequestSend(requestedUserId, userId)) {
-                return;
-            }
-            userRequestService.approveRequest(requestedUserId, userId);
-        } catch (Exception e) {
-            userRequestService.declineRequest(requestedUserId, userId);
-        }
+
+        userRequestService.approveRequest(requestedUserId, userId);
+        userRequestService.declineRequest(requestedUserId, userId);
+
         //TODO: как сервелету понять на какую кнопку нажал юзер аппрув или деклайн чтобы выполнить нужную логику
+        //TODO: попробовать сеттать какую-то переменную в формах с деклайном и аппрувом, и в сервлете уже чекать если такая переменная есть, то делаем аппурв, если нет сразу деклайн
         getServletContext().getRequestDispatcher("/incoming-requests.jsp").forward(req, res);
     }
 }

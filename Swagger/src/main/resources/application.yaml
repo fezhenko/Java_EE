@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/swagger
+    username: postgres
+    password: postgres
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+jwt:
+  secret: "hello@world!"
+
+server:
+  port: 8081
