@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient(name = "users-service", url = "${services.main.url}/api/v1")
+@FeignClient(name = "users-service", url = "${services.users-service.url}/api/v1")
 public interface UsersClient {
 
 
