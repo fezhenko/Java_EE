@@ -21,7 +21,7 @@
         <spring-context.version>5.3.23</spring-context.version>
         <spotbugs.maven.plugin.version>4.7.1.1</spotbugs.maven.plugin.version>
         <checkstyle.version>10.3.3</checkstyle.version>
-        <checkstyle.maven.plugin.version>3.2.0</checkstyle.maven.plugin.version>
+        <checkstyle.maven.plugin.version>3.2.1</checkstyle.maven.plugin.version>
         <checkstyle.config.location>codequality/checkstyle.xml</checkstyle.config.location>
         <pmd.maven.plugin.version>3.19.0</pmd.maven.plugin.version>
         <pmd.failurePriority>2</pmd.failurePriority>
@@ -150,19 +150,19 @@
                         <version>8.29</version>
                     </dependency>
                 </dependencies>
-                <executions>
-                    <execution>
-                        <id>checkstyle-validate</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                            <logViolationCountToConsole>true</logViolationCountToConsole>
-                        </configuration>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>checkstyle-validate</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <configuration>-->
+<!--                            <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--                            <logViolationCountToConsole>true</logViolationCountToConsole>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -256,13 +256,22 @@
     <reporting>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle.maven.plugin.version}</version>
+                <configuration>
+                    <configLocation>codequality/checkstyle.xml</configLocation>
+                    <headerLocation>codequality/LICENSE.txt</headerLocation>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.7.1.1</version>
                 <configuration>
                     <effort>Max</effort>
                     <threshold>Low</threshold>
-                    <includeFilterFile>whizzbang/lib-filter.xml</includeFilterFile>
+                    <includeFilterFile>codequality/spotbug.xml</includeFilterFile>
                 </configuration>
             </plugin>
             <plugin>

@@ -1,5 +1,7 @@
 package org.example.socialnetwork.config.filter;
 
+
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.socialnetwork.config.jwt.Jwt;
@@ -25,8 +27,7 @@ public class JwtFilter extends GenericFilterBean {
     private final AuthService customUserDetailsService;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         log.info("do filter " + servletRequest.getLocalName());
         String token = getTokenFromRequest((HttpServletRequest) servletRequest);
         if (token != null && jwtProvider.validateToken(token)) {
@@ -46,4 +47,5 @@ public class JwtFilter extends GenericFilterBean {
         }
         return null;
     }
+
 }
