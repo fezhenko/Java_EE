@@ -1,10 +1,10 @@
-package org.example.socialnetwork.apigateway.client.dto;
+package org.example.apigateway.client;
 
 
-import org.example.socialnetwork.apigateway.dto.AuthResultDto;
-import org.example.socialnetwork.apigateway.dto.CreateUserDto;
-import org.example.socialnetwork.apigateway.dto.CredentalsDto;
-import org.example.socialnetwork.apigateway.dto.UserDto;
+import org.example.apigateway.dto.AuthResultDto;
+import org.example.apigateway.dto.CreateUserDto;
+import org.example.apigateway.dto.CredentalsDto;
+import org.example.apigateway.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package org.example.socialnetwork.apigateway.dto;
+package org.example.apigateway.dto;
 
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
