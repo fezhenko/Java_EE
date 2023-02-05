@@ -1,11 +1,9 @@
 package org.example.apigateway.dto;
 
 import lombok.Value;
-import lombok.extern.jackson.Jacksonized;
 
 @Value
-@Jacksonized
-public class CredentalsDto {
+public class CredentialsDto {
     String username;
     String password;
 }

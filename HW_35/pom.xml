@@ -12,6 +12,7 @@
     <modules>
         <module>api-gateway</module>
         <module>spring_security</module>
+        <module>message-service</module>
     </modules>
 
     <properties>
@@ -41,14 +42,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>2.0.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>2.0.6</version>
-                <type>pom</type>
-                <scope>test</scope>
+                <version>1.7.36</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -84,6 +78,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring-boot-starter-web}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-test</artifactId>
+                <version>2.7.5</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>

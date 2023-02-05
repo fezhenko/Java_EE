@@ -1,15 +1,15 @@
 server:
-  port: 8080
+  port: 9090
 
 feign:
   client:
     config:
       domain:
-          connectTimeout: 5000
-          readTimeout: 3000
+        connectTimeout: 5000
+        readTimeout: 3000
 
 services:
-  main:
-    url: 'http://localhost:8081'
-  message:
-    url: 'http://localhost:8082'
+  users-service:
+    url: 'http://localhost:9091'
+  message-service:
+    url: 'http://localhost:9092'
