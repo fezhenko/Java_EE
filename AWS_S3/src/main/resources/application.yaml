@@ -1,0 +1,11 @@
+aws:
+  endpoints:
+    s3: "http://localhost:4566"
+  region: "us-east-1"
+  credentials:
+    access-key: "key"
+    secret-key: "secret"
+
+
+server:
+  port: 9092
