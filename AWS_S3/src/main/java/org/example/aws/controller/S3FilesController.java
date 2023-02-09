@@ -36,7 +36,7 @@ public class S3FilesController {
     public ResponseEntity<List<BucketObjectDto>> findFilesInBucket(@PathVariable String bucketName) {
         List<S3ObjectSummary> objectSummaries = s3FileService.findFilesInBucket(bucketName);
         if (!objectSummaries.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(s3FilesConverter.toDto(objectSummaries));
+            return ResponseEntity.status(HttpStatus.OK).body(s3FilesConverter.toDto(objectSummaries));
         }
         return ResponseEntity.noContent().build();
     }
@@ -61,6 +61,5 @@ public class S3FilesController {
                 dataToDownloadDto.getFileName(),
                 dataToDownloadDto.getPathToSaveFile());
     }
-
 
 }
