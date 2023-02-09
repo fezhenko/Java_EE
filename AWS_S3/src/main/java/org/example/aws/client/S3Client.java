@@ -21,16 +21,13 @@ public class S3Client {
 
     //awslocal s3api create-bucket --bucket "test"
     public void createBucket(String bucketName) {
-        String region = "us-east-1";
-        CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName, region);
-        amazonS3.createBucket(createBucketRequest);
+        amazonS3.createBucket(bucketName);
     }
 
     //awslocal s3api list-buckets
     public List<Bucket> listBuckets() {
         return amazonS3.listBuckets();
     }
-
 
     public void deleteBucket(String bucketName) {
         try {
@@ -41,18 +38,21 @@ public class S3Client {
     }
 
     //awslocal s3api put-object --bucket sample-bucket --key index.html --body index.html
-    public void putToBucket(String bucketName, String fileName, File file) {
-        amazonS3.putObject(bucketName, fileName, file);
+    public void putToBucket(String bucketName, String fileName, String filePath) {
+        amazonS3.putObject(bucketName, fileName, filePath);
     }
 
+    //awslocal s3api list-objects --bucket hello-world
     public ObjectListing getObjectsListFromBucket(String bucketName) {
         return amazonS3.listObjects(bucketName);
     }
 
-    public void downloadDocument(String bucketName, String fileName, String fileToSave) throws IOException {
+    public void downloadDocument(String bucketName, String fileName, String pathToSave) throws IOException {
         S3Object s3object = amazonS3.getObject(bucketName, fileName);
         S3ObjectInputStream inputStream = s3object.getObjectContent();
-        copyInputStreamToFile(inputStream, new File(fileToSave));
+        copyInputStreamToFile(inputStream, new File("%s/%s".formatted(pathToSave, fileName)));
     }
+
+
 
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -41,16 +40,14 @@ public class S3BucketsController {
     }
 
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createBucket(@RequestBody CreateBucketDto createBucketDto) {
         s3BucketService.createBucket(createBucketDto.getBucketName());
         return ResponseEntity
-                .status(202)
+                .status(HttpStatus.CREATED)
                 .body("bucket %s is created".formatted(createBucketDto.getBucketName()));
     }
 
     @DeleteMapping("/{bucketName}")
-    @ResponseStatus(HttpStatus.GONE)
     public ResponseEntity<String> deleteBucket(@PathVariable String bucketName) {
         try {
             s3BucketService.deleteBucket(bucketName);
@@ -58,7 +55,7 @@ public class S3BucketsController {
         catch (Exception e) {
             return ResponseEntity.status(400).body("Bucket is not deleted");
         }
-        return ResponseEntity.status(200).body("Bucket successfully deleted");
+        return ResponseEntity.status(HttpStatus.GONE).body("Bucket successfully deleted");
     }
 
 }
