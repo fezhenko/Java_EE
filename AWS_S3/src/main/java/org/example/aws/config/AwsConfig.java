@@ -34,6 +34,7 @@ public class AwsConfig {
     public AmazonS3 amazonS3() {
         AmazonS3ClientBuilder amazonS3Client = AmazonS3ClientBuilder
                 .standard()
+                .withPathStyleAccessEnabled(true)
                 .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(key, secret)));
         amazonS3Client.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(s3Endpoint, region));
         return amazonS3Client.build();
