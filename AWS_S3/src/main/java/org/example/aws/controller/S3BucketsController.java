@@ -7,6 +7,7 @@ import org.example.aws.dto.BucketDto;
 import org.example.aws.dto.CreateBucketDto;
 import org.example.aws.service.S3BucketService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,25 +31,22 @@ public class S3BucketsController {
 
     @GetMapping
     public ResponseEntity<List<BucketDto>> findBuckets() {
-        List<Bucket> bucketsList= s3BucketService.findBuckets();
+        List<Bucket> buckets = s3BucketService.findBuckets();
         try {
-            return ResponseEntity.ok(bucketConverter.toDto(bucketsList));
+            return ResponseEntity.ok(bucketConverter.toDto(buckets));
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    @PostMapping("/create")
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createBucket(@RequestBody CreateBucketDto createBucketDto) {
-        try {
-            s3BucketService.createBucket(createBucketDto.getBucketName());
-        }
-        catch (Exception e) {
-            ResponseEntity.internalServerError().build();
-        }
-        return ResponseEntity.status(202).body("bucket %s is created".formatted(createBucketDto.getBucketName()));
+        s3BucketService.createBucket(createBucketDto.getBucketName());
+        return ResponseEntity
+                .status(202)
+                .body("bucket %s is created".formatted(createBucketDto.getBucketName()));
     }
 
     @DeleteMapping("/{bucketName}")

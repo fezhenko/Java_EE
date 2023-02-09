@@ -3,10 +3,7 @@ package org.example.aws.client;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +19,14 @@ public class S3Client {
 
     private final AmazonS3 amazonS3;
 
-
     //awslocal s3api create-bucket --bucket "test"
     public void createBucket(String bucketName) {
-        amazonS3.createBucket(bucketName);
+        String region = "us-east-1";
+        CreateBucketRequest createBucketRequest = new CreateBucketRequest(bucketName, region);
+        amazonS3.createBucket(createBucketRequest);
     }
 
+    //awslocal s3api list-buckets
     public List<Bucket> listBuckets() {
         return amazonS3.listBuckets();
     }

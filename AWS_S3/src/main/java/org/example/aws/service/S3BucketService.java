@@ -19,11 +19,11 @@ public class S3BucketService {
     }
 
     public void createBucket(String bucketName) {
-        s3Client.createBucket(bucketName);
+        s3Client.createBucket(bucketName.toLowerCase());
     }
 
     public void deleteBucket(String bucketName) {
-        s3Client.deleteBucket(bucketName);
+        s3Client.deleteBucket(bucketName.toLowerCase());
     }
 
 }
