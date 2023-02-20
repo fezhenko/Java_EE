@@ -25,7 +25,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v1/s3/buckets/{bucketName}")
+@RequestMapping("/api/v1/storages/storage/{bucketName}/files")
 @RequiredArgsConstructor
 public class S3FilesController {
 
@@ -35,13 +35,12 @@ public class S3FilesController {
     @GetMapping
     public ResponseEntity<List<BucketObjectDto>> findFilesInBucket(@PathVariable String bucketName) {
         List<S3ObjectSummary> objectSummaries = s3FileService.findFilesInBucket(bucketName);
-        if (!objectSummaries.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(s3FilesConverter.toDto(objectSummaries));
-        }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body(s3FilesConverter.toDto(objectSummaries));
     }
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> uploadDocument(
             @PathVariable String bucketName,
             @RequestParam("file") MultipartFile file) {
@@ -57,9 +56,9 @@ public class S3FilesController {
             @PathVariable String bucketName,
             @RequestBody DataToDownloadDto dataToDownloadDto) throws IOException {
         s3FileService.downloadFileFromS3(
-                bucketName,
-                dataToDownloadDto.getFileName(),
-                dataToDownloadDto.getPathToSaveFile());
+            bucketName,
+            dataToDownloadDto.getFileName(),
+            dataToDownloadDto.getPathToSaveFile());
     }
 
 }

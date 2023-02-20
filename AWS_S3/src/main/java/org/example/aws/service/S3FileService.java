@@ -16,7 +16,6 @@ public class S3FileService {
 
     private final S3Client s3Client;
 
-
     public void uploadDocument(String bucketName, MultipartFile file) {
         String path = StringUtils.cleanPath(file.getResource().getDescription());
         s3Client.putToBucket(bucketName, file.getOriginalFilename(), path);
@@ -29,4 +28,5 @@ public class S3FileService {
     public void downloadFileFromS3(String bucketName, String fileName, String pathToSaveFile) throws IOException {
         s3Client.downloadDocument(bucketName.toLowerCase(), fileName, pathToSaveFile);
     }
+
 }

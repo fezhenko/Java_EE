@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/s3/buckets")
+@RequestMapping("/api/v1/storages/storage")
 @RequiredArgsConstructor
 public class S3BucketsController {
 
@@ -39,7 +39,9 @@ public class S3BucketsController {
         }
     }
 
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createBucket(@RequestBody CreateBucketDto createBucketDto) {
         s3BucketService.createBucket(createBucketDto.getBucketName());
         return ResponseEntity
