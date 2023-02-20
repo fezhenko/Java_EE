@@ -8,6 +8,9 @@ feign:
         connectTimeout: 5000
         readTimeout: 3000
 
+jwt:
+  secret: "hello@world!"
+
 services:
   users-service:
     url: 'http://localhost:9091'

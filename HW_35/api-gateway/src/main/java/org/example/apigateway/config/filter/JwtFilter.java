@@ -1,11 +1,10 @@
-package org.example.socialnetwork.config.filter;
-
-
+package org.example.apigateway.config.filter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.socialnetwork.config.jwt.Jwt;
-import org.example.socialnetwork.config.service.AuthService;
+
+import org.example.apigateway.config.jwt.Jwt;
+import org.example.apigateway.config.service.AuthService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +17,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+
 @Component
 @Slf4j
 @RequiredArgsConstructor

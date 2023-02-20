@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface MessagesClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{messageId}")
-    MessageDto getMessageById(@PathVariable Long messageId);
+    MessageDto getMessageById(@PathVariable("messageId") Long messageId);
 
 }

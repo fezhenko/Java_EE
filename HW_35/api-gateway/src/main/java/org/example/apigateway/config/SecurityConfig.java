@@ -1,7 +1,7 @@
-package org.example.socialnetwork.config;
+package org.example.apigateway.config;
 
 import lombok.RequiredArgsConstructor;
-
+import org.example.apigateway.config.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,9 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.example.socialnetwork.config.filter.JwtFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 
 @Configuration
@@ -28,7 +26,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(request -> request
-                        .antMatchers("/api/v1/auth").permitAll()
+                        .antMatchers("/api/v1/auth", "http://localhost:9091/api/v1/users/verify").permitAll()
                         .antMatchers("/api/v1/users/**").hasAnyRole("ADMIN")
                         .antMatchers("/login", "/registration").permitAll()
                         .anyRequest().authenticated()

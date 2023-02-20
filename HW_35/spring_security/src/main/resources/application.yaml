@@ -11,8 +11,5 @@ management:
       exposure:
         include: '*'
 
-jwt:
-  secret: "hello@world!"
-
 server:
   port: 9091
