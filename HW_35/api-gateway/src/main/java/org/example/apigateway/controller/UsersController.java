@@ -51,7 +51,7 @@ public class UsersController {
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserDto> getUserById(@RequestHeader (HttpHeaders.AUTHORIZATION) String token,
-                                                     @PathVariable("userId") Long userId) {
+                                               @PathVariable("userId") Long userId) {
         if (!token.isEmpty()) {
             UserDto user = userService.getUserByUserId(userId);
             return ResponseEntity.ok().body(user);

@@ -3,7 +3,6 @@ package org.example.socialnetwork.service;
 import lombok.RequiredArgsConstructor;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public List<AppUser> findUsers() {
         return userRepository.findUsers();
@@ -22,13 +20,16 @@ public class UserService {
         if (validateUser(username)) {
             throw new RuntimeException("User with this username already exists");
         }
-        userRepository.createUser(username, passwordEncoder.encode(password), role);
+        userRepository.createUser(username, password, role);
         return getUser(username);
     }
 
     public boolean validateUser(String username, String password) {
         AppUser appUser = userRepository.getUser(username);
-        return passwordEncoder.matches(password, appUser.getPassword());
+        if (appUser.getPassword().equals(password)) {
+            return true;
+        }
+        throw new RuntimeException("Invalid credentials!");
     }
 
     public boolean validateUser(String username) {
@@ -37,7 +38,7 @@ public class UserService {
 
     public Long getUserId(String username, String password) {
         AppUser appUser = userRepository.getUser(username);
-        if (passwordEncoder.matches(password, appUser.getPassword())) {
+        if (appUser.getPassword().equals(password)) {
             return appUser.getUserId();
         }
         throw new RuntimeException("Invalid credentials!");
@@ -53,18 +54,10 @@ public class UserService {
 
     public AppUser getUser(String username, String password) {
         final AppUser appUser = userRepository.getUser(username);
-        if (passwordEncoder.matches(password, appUser.getPassword())) {
+        if (appUser.getPassword().equals(password)) {
             return appUser;
         }
         throw new RuntimeException("Invalid credentials!");
-    }
-
-    public AppUser getUser(String username, String password, String role) {
-        final AppUser appUser = userRepository.getUser(username);
-        if (passwordEncoder.matches(password, appUser.getPassword()) && appUser.getRole().equals(role)) {
-            return appUser;
-        }
-        throw new RuntimeException("Invalid password or role");
     }
 
 }

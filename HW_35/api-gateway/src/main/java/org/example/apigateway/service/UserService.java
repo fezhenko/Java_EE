@@ -7,6 +7,7 @@ import org.example.apigateway.client.dto.UserVerificationDto;
 import org.example.apigateway.client.dto.VerificationResultDto;
 import org.example.apigateway.dto.CreateUserDto;
 import org.example.apigateway.dto.UserDto;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,13 +17,19 @@ import java.util.List;
 public class UserService {
 
     private final UsersClient usersClient;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> findUsers() {
         return usersClient.findUsers();
     }
 
     public UserDto createUser(CreateUserDto createUserDto) {
-       return usersClient.createUser(createUserDto);
+        CreateUserDto adjustedUserDto = CreateUserDto.builder()
+                .username(createUserDto.getUsername())
+                .password(passwordEncoder.encode(createUserDto.getPassword()))
+                .role(createUserDto.getRole())
+                .build();
+        return usersClient.createUser(adjustedUserDto);
     }
 
     public AppUserDto findUserByUsername(String username) {
@@ -32,7 +39,7 @@ public class UserService {
     public VerificationResultDto userVerification(String username, String password) {
         UserVerificationDto credentialsToVerify = UserVerificationDto.builder()
                 .username(username)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .build();
 
         return usersClient.verifyUserByCredentials(credentialsToVerify);
