@@ -39,10 +39,17 @@ public class UserService {
     public VerificationResultDto userVerification(String username, String password) {
         UserVerificationDto credentialsToVerify = UserVerificationDto.builder()
                 .username(username)
-                .password(passwordEncoder.encode(password))
+                .password(password)
                 .build();
 
-        return usersClient.verifyUserByCredentials(credentialsToVerify);
+        UserVerificationDto getUserFromUserService = usersClient.verifyUserByCredentials(credentialsToVerify);
+
+        if (passwordEncoder.matches(credentialsToVerify.getPassword(),
+                getUserFromUserService.getPassword())) {
+            return VerificationResultDto.builder().isValid(true).build();
+        }
+
+        return VerificationResultDto.builder().isValid(false).build();
     }
 
     public UserDto getUserByUserId(Long userId) {

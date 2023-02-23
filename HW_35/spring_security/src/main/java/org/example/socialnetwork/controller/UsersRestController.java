@@ -29,15 +29,9 @@ public class UsersRestController {
     @PostMapping(value = "/verify",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public VerificationResultDto verifyUserByCredentials(@RequestBody final UserVerificationDto credentialsToVerify) {
-
-        boolean isUserVerified = userService.validateUser(
-                credentialsToVerify.getUsername(),
-                credentialsToVerify.getPassword());
-
-        return VerificationResultDto.builder()
-                .isValid(isUserVerified)
-                .build();
+    public UserVerificationDto verifyUserByCredentials(@RequestBody final UserVerificationDto credentialsToVerify) {
+        return userService.validateUserByUsername(
+                credentialsToVerify.getUsername());
     }
 
     @GetMapping

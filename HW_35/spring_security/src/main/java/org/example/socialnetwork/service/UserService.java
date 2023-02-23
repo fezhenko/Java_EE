@@ -1,6 +1,7 @@
 package org.example.socialnetwork.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.socialnetwork.dto.UserVerificationDto;
 import org.example.socialnetwork.model.AppUser;
 import org.example.socialnetwork.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -36,28 +37,20 @@ public class UserService {
         return userRepository.validateUser(username);
     }
 
-    public Long getUserId(String username, String password) {
+    public UserVerificationDto validateUserByUsername(String username) {
         AppUser appUser = userRepository.getUser(username);
-        if (appUser.getPassword().equals(password)) {
-            return appUser.getUserId();
-        }
-        throw new RuntimeException("Invalid credentials!");
+        return UserVerificationDto.builder()
+                .username(appUser.getName())
+                .password(appUser.getPassword())
+                .build();
     }
-
+    
     public AppUser getUserById(Long userId) {
         return userRepository.getUserById(userId);
     }
 
     public AppUser getUser(String username) {
         return userRepository.getUser(username);
-    }
-
-    public AppUser getUser(String username, String password) {
-        final AppUser appUser = userRepository.getUser(username);
-        if (appUser.getPassword().equals(password)) {
-            return appUser;
-        }
-        throw new RuntimeException("Invalid credentials!");
     }
 
 }

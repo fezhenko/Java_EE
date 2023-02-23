@@ -3,7 +3,6 @@ package org.example.apigateway.client;
 
 import org.example.apigateway.client.dto.AppUserDto;
 import org.example.apigateway.client.dto.UserVerificationDto;
-import org.example.apigateway.client.dto.VerificationResultDto;
 import org.example.apigateway.dto.CreateUserDto;
 import org.example.apigateway.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,7 +18,7 @@ public interface UsersClient {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/verify")
-    VerificationResultDto verifyUserByCredentials(final UserVerificationDto credentialsToVerify);
+    UserVerificationDto verifyUserByCredentials(final UserVerificationDto credentialsToVerify);
 
     @RequestMapping(method = RequestMethod.GET)
     List<UserDto> findUsers();
