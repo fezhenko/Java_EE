@@ -11,7 +11,7 @@
 
     <modules>
         <module>api-gateway</module>
-        <module>spring_security</module>
+        <module>users-service</module>
         <module>message-service</module>
     </modules>
 

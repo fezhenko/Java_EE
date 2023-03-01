@@ -23,8 +23,9 @@
 hs_err_pid*
 /.idea/encodings.xml
 /.idea/
-/.idea/
 /lesson_33/lesson_33.iml
 /Swagger/target/
+spring_security/spring_security/node_modules
+spring_security/spring_security/build
 /spring_security/spring_security using JWT.iml
 /HW_35/microservices.iml
