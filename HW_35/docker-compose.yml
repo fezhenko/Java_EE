@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  user-service:
+    image: "postgres:13.4-alpine"
+    container_name: "user-service"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
+    ports:
+      - "15432:5432"
+
+  message-service:
+    image: "postgres:13.4-alpine"
+    container_name: "message-service"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "messages"
+    ports:
+      - "15433:5432"
